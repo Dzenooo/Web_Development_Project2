@@ -1,0 +1,66 @@
+button {
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-left: 40%;
+}
+
+h1
+{
+	text-align: center;
+}
+
+p{
+    text-align: center;
+}
+
+
+button {background-color: black;} 
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 60%;
+ }
+
+ td {
+    padding: 15px;
+    text-align: left;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: gray;
+}
+
+#result {
+    font-weight: bold;
+    margin-top: 10px;
+    }

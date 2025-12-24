@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<link rel="stylesheet" href="style.css">
+        <title>Bingo</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    </head>
+    <body>
+	<div class="content" id="contentToConvert">
+        <h1>BINGO</h1>
+        
+		<table style="border:1px; border-spacing:30px">
+		<tr>
+		<td> Putovao je van zemlje. </td>
+		<td>Letio je avionom.</td>
+		<td> Ima vise od troje brace i sestara </td>
+		<td> Ima pet kucnih ljubimaca </td>
+		<td>Voli jesti kisele krastavce </td>
+		</tr>
+		
+		<tr>
+		<td> Igra kosarku </td>
+		<td>Voli Disney-eve crtane filmove </td>
+		<td> Voli crtati</td>
+		<td> Voli HTML</td>
+		<td>Zna roniti </td>
+		</tr>
+		
+		<tr>
+		<td> Omiljena boja je narandzasta </td>
+		<td>Ne voli plazu </td>
+		<td> SLOBODAN PROSTOR </td>
+		<td> Dobar je u matematici</td>
+		<td>Nema kucne ljubimce</td>
+		</tr>
+		
+		<tr>
+		<td> Ne voli cokoladu</td>
+		<td>Boji se pauka </td>
+		<td> Voli peci kolacice </td>
+		<td> Svira instrument</td>
+		<td>Alergican je na macke ili pse</td>
+		</tr>
+		
+		<tr>
+		<td>Slavi rodjendan u oktobru</td>
+		<td>Voli jesti sir</td>
+		<td> Igra online igre</td>
+		<td> Ne voli pizzu </td>
+		<td>Voli pjevati </td>
+		</tr>
+		
+		</table>
+		<br>
+		
+		<p>Skupi 5 potpisa zaredom - BINGO!</p>
+        <p>Svaka osoba moze staviti inicijale na vas papir samo dva puta.</p>
+		
+        <button onclick="generatePDF()">Preuzmi kao PDF</button>
+			
+        </div>
+		
+		<script>
+			function generatePDF() {
+			const element = document.getElementById('contentToConvert'); // Obuhvata element za konvert
+
+			const options = {
+				margin: 1,
+				filename: 'Bingo.pdf',
+				image: { type: 'jpeg', quality: 0.98 },
+				html2canvas: { scale: 2 },
+				jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+			};
+
+			// Koristi html2pdf biblioteku da generira i snimi PDF file
+			html2pdf().set(options).from(element).save();
+		}
+		</script>
+    </body>
+</html>
