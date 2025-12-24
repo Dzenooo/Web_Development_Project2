@@ -40,6 +40,15 @@ nav ul{ display:flex; gap:18px; align-items:center; justify-content:center; }
 nav a, nav a:visited{ color:var(--muted); padding:10px 14px; text-transform:uppercase; text-decoration:none; font-weight:600; border-radius:8px; }
 nav a:hover{ color:var(--primary); background:rgba(43,138,238,0.06); }
 
+/* Auth link styled as primary button */
+nav a.auth-link, nav a.auth-link:visited{
+    background: linear-gradient(180deg,var(--primary), #226fca);
+    color:#fff;
+    box-shadow: 0 8px 18px rgba(43,138,238,0.16);
+    border: 1px solid rgba(43,138,238,0.35);
+}
+nav a.auth-link:hover{ color:#fff; background: linear-gradient(180deg,#226fca, #1c5da8); }
+
 nav ul li{ list-style:none; }
 
 h2, h3{ color:var(--primary); }
