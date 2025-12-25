@@ -58,19 +58,19 @@ export class AuthService {
    */
   async login(email: string, password:  string) {
   try {
-    // Kreiraj timeout promise (8 sekundi)
+    // Kreiraj timeout  (8 sekundi)
     const timeoutPromise = new Promise((_, reject) => 
       setTimeout(() => reject(new Error('timeout')), 8000)
     );
 
-    // Firebase login promise
+    // Firebase login 
     const loginPromise = signInWithEmailAndPassword(
       this.auth,
       email,
       password
     );
 
-    // Utrka između login-a i timeout-a
+    // Login/timeout
     const userCredential = await Promise.race([
       loginPromise,
       timeoutPromise
@@ -80,7 +80,7 @@ export class AuthService {
   } catch (error:  any) {
     console.error('Login error:', error);
     
-    // Provjeri da li je timeout
+    // Timeout
     if (error. message === 'timeout') {
       return { 
         success: false, 
