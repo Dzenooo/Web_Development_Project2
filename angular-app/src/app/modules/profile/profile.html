@@ -1,64 +1,75 @@
 <div class="profile-container">
   
-  <div *ngIf="loading && !userData" class="loading-spinner">
-    Učitavanje...
+  <!-- Loading State -->
+  <div class="loading" *ngIf="loading">
+    <p>Učitavanje profila... </p>
   </div>
 
-  <div *ngIf="!loading || userData" class="profile-content">
-    
+  <!-- Profile Content -->
+  <div *ngIf="!loading">
+
+    <!-- Header -->
     <div class="profile-header">
-      <h1>👤 Moj Profil</h1>
-      <p class="subtitle">Upravljaj svojim podacima i postavkama</p>
+      <h1>Moj Profil</h1>
     </div>
 
+    <!-- Success/Error Messages -->
     <div class="alert alert-success" *ngIf="successMessage">
-      ✓ {{ successMessage }}
+      {{ successMessage }}
     </div>
     <div class="alert alert-danger" *ngIf="errorMessage">
-      ✗ {{ errorMessage }}
+      {{ errorMessage }}
     </div>
 
+    <!-- SEKCIJA 1: Osnovni Podaci -->
     <div class="profile-card">
-      <h2>Osnovne Informacije</h2>
-
-      <div *ngIf="!editMode" class="view-mode">
-        <div class="info-row">
-          <span class="label">Ime:</span>
-          <span class="value">{{ userData?. firstName || 'N/A' }}</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Prezime:</span>
-          <span class="value">{{ userData?.lastName || 'N/A' }}</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Puno ime:</span>
-          <span class="value">{{ userData?.displayName || 'N/A' }}</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Email:</span>
-          <span class="value">{{ userData?.email || 'N/A' }}</span>
-        </div>
-
-        <button class="btn btn-primary" (click)="enableEditMode()">
-          Uredi Profil
-        </button>
+      <div class="card-header">
+        <h2>Osnovni Podaci</h2>
       </div>
 
-      <div *ngIf="editMode" class="edit-mode">
-        <form [formGroup]="profileForm">
-          
+      <!-- View Mode -->
+      <div class="profile-info" *ngIf="! editMode">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Ime</span>
+            <span class="value">{{ userData?. firstName || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Prezime</span>
+            <span class="value">{{ userData?.lastName || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Puno Ime</span>
+            <span class="value">{{ userData?.displayName || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Email</span>
+            <span class="value">{{ userData?.email || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <!-- Edit Button (Bottom Center) -->
+        <div class="card-actions">
+          <button class="btn btn-secondary" (click)="enableEditMode()">
+            Uredi Profil
+          </button>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" *ngIf="editMode">
+        <div class="form-grid">
           <div class="form-group">
             <label for="firstName">Ime</label>
             <input 
               type="text" 
-              id="firstName"
-              class="form-control"
+              id="firstName" 
               formControlName="firstName"
-              [class.is-invalid]="pf['firstName'].errors && pf['firstName'].touched"
+              placeholder="Unesite ime"
+              [class.error]="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched"
             />
-            <div class="invalid-feedback" *ngIf="pf['firstName'].errors && pf['firstName'].touched">
-              <div *ngIf="pf['firstName'].errors?. ['required']">Ime je obavezno.</div>
-              <div *ngIf="pf['firstName'].errors?.['minlength']">Ime mora imati minimum 2 karaktera. </div>
+            <div class="error-message" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+              Ime je obavezno (minimum 2 karaktera)
             </div>
           </div>
 
@@ -66,79 +77,69 @@
             <label for="lastName">Prezime</label>
             <input 
               type="text" 
-              id="lastName"
-              class="form-control"
+              id="lastName" 
               formControlName="lastName"
-              [class.is-invalid]="pf['lastName'].errors && pf['lastName'].touched"
+              placeholder="Unesite prezime"
+              [class.error]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched"
             />
-            <div class="invalid-feedback" *ngIf="pf['lastName'].errors && pf['lastName'].touched">
-              <div *ngIf="pf['lastName'].errors?.['required']">Prezime je obavezno.</div>
-              <div *ngIf="pf['lastName'].errors?.['minlength']">Prezime mora imati minimum 2 karaktera. </div>
+            <div class="error-message" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+              Prezime je obavezno (minimum 2 karaktera)
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="displayName">Puno Ime (prikazno)</label>
+          <div class="form-group full-width">
+            <label for="displayName">Puno Ime</label>
             <input 
               type="text" 
-              id="displayName"
-              class="form-control"
+              id="displayName" 
               formControlName="displayName"
-              [class.is-invalid]="pf['displayName']. errors && pf['displayName']. touched"
+              placeholder="Unesite puno ime"
+              [class.error]="profileForm. get('displayName')?.invalid && profileForm.get('displayName')?.touched"
             />
-            <div class="invalid-feedback" *ngIf="pf['displayName'].errors && pf['displayName'].touched">
-              <div *ngIf="pf['displayName'].errors?.['required']">Prikazno ime je obavezno.</div>
+            <div class="error-message" *ngIf="profileForm. get('displayName')?.invalid && profileForm.get('displayName')?.touched">
+              Puno ime je obavezno (minimum 3 karaktera)
             </div>
           </div>
+        </div>
 
-          <div class="button-group">
-            <button 
-              type="button" 
-              class="btn btn-success" 
-              (click)="saveProfile()"
-              [disabled]="loading || profileForm.invalid"
-            >
-              {{ loading ? 'Čuvanje...' : 'Sačuvaj' }}
-            </button>
-            <button 
-              type="button" 
-              class="btn btn-secondary" 
-              (click)="cancelEdit()"
-              [disabled]="loading"
-            >
-              Odustani
-            </button>
-          </div>
-        </form>
-      </div>
+        <div class="card-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="loading || profileForm.invalid">
+            {{ loading ? 'Spremanje...' : 'Sačuvaj Izmjene' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()" [disabled]="loading">
+            Odustani
+          </button>
+        </div>
+      </form>
     </div>
 
+    <!-- SEKCIJA 2: Sigurnost -->
     <div class="profile-card">
-      <h2>Sigurnost</h2>
+      <div class="card-header">
+        <h2>Sigurnost</h2>
+      </div>
 
-      <div *ngIf="!changePasswordMode">
-        <p class="info-text">Želiš promijeniti lozinku? </p>
-        <button class="btn btn-primary" (click)="togglePasswordMode()">
+      <!-- Password Change Button (if not in edit mode) -->
+      <div class="card-actions" *ngIf="!changePasswordMode">
+        <button class="btn btn-secondary" (click)="togglePasswordMode()">
           Promijeni Lozinku
         </button>
       </div>
 
-      <div *ngIf="changePasswordMode">
-        <form [formGroup]="passwordForm">
-          
+      <!-- Change Password Form -->
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" *ngIf="changePasswordMode">
+        <div class="form-grid">
           <div class="form-group">
             <label for="newPassword">Nova Lozinka</label>
             <input 
               type="password" 
-              id="newPassword"
-              class="form-control"
+              id="newPassword" 
               formControlName="newPassword"
-              [class.is-invalid]="pwf['newPassword'].errors && pwf['newPassword'].touched"
-              placeholder="Minimum 6 karaktera"
+              placeholder="••••••••"
+              [class.error]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched"
             />
-            <div class="invalid-feedback" *ngIf="pwf['newPassword'].errors && pwf['newPassword'].touched">
-              <div *ngIf="pwf['newPassword'].errors?.['required']">Lozinka je obavezna.</div>
-              <div *ngIf="pwf['newPassword'].errors?.['minlength']">Lozinka mora imati minimum 6 karaktera.</div>
+            <div class="error-message" *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+              Lozinka mora imati minimum 6 karaktera
             </div>
           </div>
 
@@ -146,49 +147,39 @@
             <label for="confirmPassword">Potvrdi Lozinku</label>
             <input 
               type="password" 
-              id="confirmPassword"
-              class="form-control"
+              id="confirmPassword" 
               formControlName="confirmPassword"
-              [class.is-invalid]="pwf['confirmPassword']. errors && pwf['confirmPassword']. touched"
-              placeholder="Ponovi novu lozinku"
+              placeholder="••••••••"
+              [class.error]="passwordForm.get('confirmPassword')?.errors && passwordForm.get('confirmPassword')?.touched"
             />
-            <div class="invalid-feedback" *ngIf="pwf['confirmPassword']. errors && pwf['confirmPassword']. touched">
-              <div *ngIf="pwf['confirmPassword'].errors?.['required']">Potvrda lozinke je obavezna.</div>
-              <div *ngIf="pwf['confirmPassword'].errors?. ['passwordMismatch']">Lozinke se ne podudaraju.</div>
+            <div class="error-message" *ngIf="passwordForm. get('confirmPassword')?.errors?.['passwordMismatch'] && passwordForm.get('confirmPassword')?.touched">
+              Lozinke se ne podudaraju
             </div>
           </div>
+        </div>
 
-          <div class="button-group">
-            <button 
-              type="button" 
-              class="btn btn-success" 
-              (click)="changePassword()"
-              [disabled]="loading || passwordForm.invalid"
-            >
-              {{ loading ? 'Mijenjam.. .' : 'Promijeni' }}
-            </button>
-            <button 
-              type="button" 
-              class="btn btn-secondary" 
-              (click)="togglePasswordMode()"
-              [disabled]="loading"
-            >
-              Odustani
-            </button>
-          </div>
-        </form>
-      </div>
+        <div class="card-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="loading || passwordForm.invalid">
+            {{ loading ? 'Spremanje...' : 'Promijeni Lozinku' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="togglePasswordMode()" [disabled]="loading">
+            Odustani
+          </button>
+        </div>
+      </form>
     </div>
 
+    <!-- SEKCIJA 3: Tema -->
     <div class="profile-card">
-      <h2>Tema</h2>
-      <p class="info-text">Izaberi temu koja ti odgovara</p>
+      <div class="card-header">
+        <h2>Tema Aplikacije</h2>
+      </div>
+      
       <app-theme-switcher></app-theme-switcher>
     </div>
 
-    <div class="profile-card">
-      <h2>Sesija</h2>
-      <p class="info-text">Odjavi se sa svog naloga</p>
+    <!-- LOGOUT BUTTON (Bottom, Centered, No Card) -->
+    <div class="logout-section">
       <button class="btn btn-danger" (click)="logout()">
         Odjavi se
       </button>
