@@ -1,85 +1,99 @@
 .theme-switcher {
-  .theme-options {
-    display:  flex;
-    gap: 20px;
-    justify-content: center;
+  padding: 20px 0;
+}
+
+.theme-options {
+  display: flex;
+  gap: 20px;
+  justify-content:  center;
+  flex-wrap:  wrap;
+}
+
+.theme-option {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
   }
 
-  .theme-option {
-    cursor: pointer;
-    text-align: center;
-    padding: 10px;
-    border-radius: 8px;
-    transition: transform 0.2s;
-
-    &:hover {
-      transform:  translateY(-3px);
-    }
-
-    &.active {
-      .theme-preview {
-        border:  3px solid #1e78d2;
-        box-shadow: 0 4px 12px rgba(30, 120, 210, 0.3);
-      }
+  &.active {
+    .theme-preview {
+      border:  3px solid var(--primary);
+      box-shadow: 0 4px 12px var(--primary-light);
     }
 
     .theme-name {
-      display: block;
-      margin-top: 10px;
-      font-size:  14px;
-      font-weight: 600;
-      color: #333333;
+      color: var(--primary);
+      font-weight: 700;
     }
   }
+}
 
-  .theme-preview {
-    width: 120px;
-    height: 80px;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 2px solid #dddddd;
-    transition: all 0.2s;
+.theme-preview {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-    .preview-bar {
-      height: 20px;
-      background: linear-gradient(to right, #1e78d2, #4a9eff);
-    }
-
-    .preview-content {
-      height: 60px;
-    }
-
-    &.light-preview {
-      .review-content {
-        background: #ffffff;
-      }
-    }
-
-    &.dark-preview {
-      .preview-bar {
-        background: linear-gradient(to right, #2c3e50, #34495e);
-      }
-
-      .preview-content {
-        background: #1a1a1a;
-      }
-    }
-
-    &.rainbow-preview {
-      .preview-bar {
-        background: linear-gradient(to right, #ff0080, #ff8c00, #40e0d0, #8a2be2);
-      }
-
-      .preview-content {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      }
-    }
+  .preview-bar {
+    height: 20px;
+    width: 100%;
   }
 
-  .loading-indicator {
-    text-align: center;
-    margin-top: 15px;
-    color: #666666;
-    font-size: 14px;
+  .preview-content {
+    height: 60px;
+    width: 100%;
   }
+}
+
+.light-preview {
+  .preview-bar {
+    background:  linear-gradient(180deg, #2b8aee, #226fca);
+  }
+
+  .preview-content {
+    background: #f7f9fc;
+  }
+}
+
+.dark-preview {
+  .preview-bar {
+    background: linear-gradient(180deg, #6bb0ff, #4a9eff);
+  }
+
+  .preview-content {
+    background:  #1a1a1a;
+  }
+}
+
+.rainbow-preview {
+  .preview-bar {
+    background: linear-gradient(90deg, #ff6b9d, #fbbf24, #34d399, #6bb0ff, #a78bfa);
+  }
+
+  .preview-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+}
+
+.theme-name {
+  display: block;
+  margin-top: 12px;
+  font-size:  14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+}
+
+.loading-indicator {
+  text-align: center;
+  margin-top: 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-style: italic;
 }

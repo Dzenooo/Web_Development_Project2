@@ -199,6 +199,9 @@ export class ProfileComponent implements OnInit {
   }
 
   async logout() {
+    document.body.classList.remove('theme-light', 'theme-dark', 'theme-rainbow');
+    document.body.classList.add('theme-light');
+
     await this.authService.logout();
     this.router.navigate(['/login']);
   }

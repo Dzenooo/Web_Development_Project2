@@ -19,8 +19,8 @@ export class UserService {
     if (! user) return null;
 
     try {
-      const userDoc = await getDoc(doc(this.firestore, 'users', user.uid));
-      return userDoc.exists() ? userDoc.data() : null;
+      const userDoc = await getDoc(doc(this.firestore, 'users', user. uid));
+      return userDoc. exists() ? userDoc.data() : null;
     } catch (error) {
       console.error('Error getting user data:', error);
       return null;
@@ -36,14 +36,14 @@ export class UserService {
     if (!user) throw new Error('User not logged in');
 
     try {
-      await updateDoc(doc(this. firestore, 'users', user.uid), {
-        ... data,
+      await updateDoc(doc(this.firestore, 'users', user.uid), {
+        ...data,
         lastUpdated:  new Date().toISOString()
       });
       return { success: true };
     } catch (error:  any) {
       console.error('Error updating profile:', error);
-      return { success: false, error: error. message };
+      return { success: false, error: error.message };
     }
   }
 
@@ -54,12 +54,29 @@ export class UserService {
     try {
       await updateDoc(doc(this.firestore, 'users', user.uid), {
         theme:  theme,
-        lastUpdated: new Date().toISOString()
+        lastUpdated:  new Date().toISOString()
       });
       return { success: true };
-    } catch (error:  any) {
+    } catch (error: any) {
       console.error('Error updating theme:', error);
       return { success: false, error: error.message };
+    }
+  }
+
+  async getUserTheme(): Promise<string> {
+    const user = this.auth.currentUser;
+    if (! user) return 'light';
+
+    try {
+      const userDoc = await getDoc(doc(this.firestore, 'users', user.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        return data?.['theme'] || 'light';
+      }
+      return 'light';
+    } catch (error) {
+      console.error('Error getting theme:', error);
+      return 'light';
     }
   }
 
@@ -72,7 +89,7 @@ export class UserService {
       return { success: true };
     } catch (error: any) {
       console.error('Error updating password:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: error. message };
     }
   }
 }

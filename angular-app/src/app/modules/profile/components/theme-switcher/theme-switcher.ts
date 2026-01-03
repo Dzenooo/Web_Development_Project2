@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { UserService } from '../../../../core/services/user';
 
 @Component({
@@ -10,40 +10,54 @@ import { UserService } from '../../../../core/services/user';
   styleUrl: './theme-switcher.scss'
 })
 export class ThemeSwitcherComponent implements OnInit {
-  currentTheme: 'light' | 'dark' | 'rainbow' = 'light';
-  loading = false;
+  
+  currentTheme: string = 'light';
+  loading:  boolean = false;
+  
+  themes = [
+    { name: 'light', label: 'Light' },
+    { name: 'dark', label: 'Dark' },
+    { name: 'rainbow', label: 'Rainbow' }
+  ];
 
   constructor(
-    private userService: UserService,
-    private cdr: ChangeDetectorRef
+    @Inject(DOCUMENT) private document: Document,
+    private userService: UserService
   ) {}
 
   async ngOnInit() {
-    const userData = await this.userService. getCurrentUserData();
-    
-    if (userData?.['theme']) {
-      this.currentTheme = userData['theme'];
-      this.applyTheme(this.currentTheme);
-      this.cdr.detectChanges();
-    }
-  }
-
-  async selectTheme(theme: 'light' | 'dark' | 'rainbow') {
     this.loading = true;
-    this.cdr.detectChanges();
     
-    const result = await this.userService. updateTheme(theme);
-    
-    if (result.success) {
-      this.currentTheme = theme;
-      this.applyTheme(theme);
+    try {
+      const theme = await this.userService.getUserTheme();
+      if (theme) {
+        this.currentTheme = theme;
+        this.applyTheme(theme);
+      }
+    } catch (error) {
+      console.error('Error loading theme:', error);
+    } finally {
+      this.loading = false;
     }
-    
-    this.loading = false;
-    this.cdr.detectChanges();
   }
 
-  applyTheme(theme: string) {
-    document.body.className = `theme-${theme}`;
+  async selectTheme(themeName: string) {
+    this.loading = true;
+    this.currentTheme = themeName;
+    this.applyTheme(themeName);
+    
+    try {
+      await this.userService.updateTheme(themeName as 'light' | 'dark' | 'rainbow');
+    } catch (error) {
+      console.error('Error saving theme:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private applyTheme(theme: string) {
+    const body = this.document.body;
+    body.classList.remove('theme-light', 'theme-dark', 'theme-rainbow');
+    body.classList.add(`theme-${theme}`);
   }
 }
