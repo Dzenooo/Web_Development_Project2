@@ -1,20 +1,24 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login';
 import { RegisterComponent } from './auth/register/register';
+import { DashboardComponent } from './dashboard/dashboard';
 
 export const routes: Routes = [
-  // Default route - redirektuj na login
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  
-  // Login ruta
-  { path: 'login', component: LoginComponent },
-  
-  // Register ruta
+  { path: '', redirectTo:  '/login', pathMatch: 'full' },
+  { path:  'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   
-  // Dashboard ruta (za kasnije - sada samo placeholder)
-  { path: 'dashboard', loadComponent: () => import('./dashboard/dashboard').then(m => m.DashboardComponent) },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      {
+        path: 'profile',
+        loadComponent: () => import('./modules/profile/profile').then(m => m.ProfileComponent)
+      }
+    ]
+  },
   
-  // Wildcard route - 404 Not Found
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo:  '/login' }
 ];

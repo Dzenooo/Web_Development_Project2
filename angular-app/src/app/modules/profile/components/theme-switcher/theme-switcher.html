@@ -1,1 +1,45 @@
-<p>theme-switcher works!</p>
+<div class="theme-switcher">
+  <div class="theme-options">
+    
+    <div 
+      class="theme-option" 
+      [class.active]="currentTheme === 'light'"
+      (click)="selectTheme('light')"
+    >
+      <div class="theme-preview light-preview">
+        <div class="preview-bar"></div>
+        <div class="preview-content"></div>
+      </div>
+      <span class="theme-name">Light</span>
+    </div>
+
+    <div 
+      class="theme-option" 
+      [class.active]="currentTheme === 'dark'"
+      (click)="selectTheme('dark')"
+    >
+      <div class="theme-preview dark-preview">
+        <div class="preview-bar"></div>
+        <div class="preview-content"></div>
+      </div>
+      <span class="theme-name">Dark</span>
+    </div>
+
+    <div 
+      class="theme-option" 
+      [class.active]="currentTheme === 'rainbow'"
+      (click)="selectTheme('rainbow')"
+    >
+      <div class="theme-preview rainbow-preview">
+        <div class="preview-bar"></div>
+        <div class="preview-content"></div>
+      </div>
+      <span class="theme-name">Rainbow</span>
+    </div>
+
+  </div>
+
+  <div class="loading-indicator" *ngIf="loading">
+    Mijenjam temu... 
+  </div>
+</div>

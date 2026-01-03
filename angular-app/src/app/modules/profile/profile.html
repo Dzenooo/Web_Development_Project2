@@ -1,1 +1,198 @@
-<p>profile works!</p>
+<div class="profile-container">
+  
+  <div *ngIf="loading && !userData" class="loading-spinner">
+    Učitavanje...
+  </div>
+
+  <div *ngIf="!loading || userData" class="profile-content">
+    
+    <div class="profile-header">
+      <h1>👤 Moj Profil</h1>
+      <p class="subtitle">Upravljaj svojim podacima i postavkama</p>
+    </div>
+
+    <div class="alert alert-success" *ngIf="successMessage">
+      ✓ {{ successMessage }}
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      ✗ {{ errorMessage }}
+    </div>
+
+    <div class="profile-card">
+      <h2>Osnovne Informacije</h2>
+
+      <div *ngIf="!editMode" class="view-mode">
+        <div class="info-row">
+          <span class="label">Ime:</span>
+          <span class="value">{{ userData?. firstName || 'N/A' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Prezime:</span>
+          <span class="value">{{ userData?.lastName || 'N/A' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Puno ime:</span>
+          <span class="value">{{ userData?.displayName || 'N/A' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Email:</span>
+          <span class="value">{{ userData?.email || 'N/A' }}</span>
+        </div>
+
+        <button class="btn btn-primary" (click)="enableEditMode()">
+          Uredi Profil
+        </button>
+      </div>
+
+      <div *ngIf="editMode" class="edit-mode">
+        <form [formGroup]="profileForm">
+          
+          <div class="form-group">
+            <label for="firstName">Ime</label>
+            <input 
+              type="text" 
+              id="firstName"
+              class="form-control"
+              formControlName="firstName"
+              [class.is-invalid]="pf['firstName'].errors && pf['firstName'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="pf['firstName'].errors && pf['firstName'].touched">
+              <div *ngIf="pf['firstName'].errors?. ['required']">Ime je obavezno.</div>
+              <div *ngIf="pf['firstName'].errors?.['minlength']">Ime mora imati minimum 2 karaktera. </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Prezime</label>
+            <input 
+              type="text" 
+              id="lastName"
+              class="form-control"
+              formControlName="lastName"
+              [class.is-invalid]="pf['lastName'].errors && pf['lastName'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="pf['lastName'].errors && pf['lastName'].touched">
+              <div *ngIf="pf['lastName'].errors?.['required']">Prezime je obavezno.</div>
+              <div *ngIf="pf['lastName'].errors?.['minlength']">Prezime mora imati minimum 2 karaktera. </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="displayName">Puno Ime (prikazno)</label>
+            <input 
+              type="text" 
+              id="displayName"
+              class="form-control"
+              formControlName="displayName"
+              [class.is-invalid]="pf['displayName']. errors && pf['displayName']. touched"
+            />
+            <div class="invalid-feedback" *ngIf="pf['displayName'].errors && pf['displayName'].touched">
+              <div *ngIf="pf['displayName'].errors?.['required']">Prikazno ime je obavezno.</div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button 
+              type="button" 
+              class="btn btn-success" 
+              (click)="saveProfile()"
+              [disabled]="loading || profileForm.invalid"
+            >
+              {{ loading ? 'Čuvanje...' : 'Sačuvaj' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary" 
+              (click)="cancelEdit()"
+              [disabled]="loading"
+            >
+              Odustani
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h2>Sigurnost</h2>
+
+      <div *ngIf="!changePasswordMode">
+        <p class="info-text">Želiš promijeniti lozinku? </p>
+        <button class="btn btn-primary" (click)="togglePasswordMode()">
+          Promijeni Lozinku
+        </button>
+      </div>
+
+      <div *ngIf="changePasswordMode">
+        <form [formGroup]="passwordForm">
+          
+          <div class="form-group">
+            <label for="newPassword">Nova Lozinka</label>
+            <input 
+              type="password" 
+              id="newPassword"
+              class="form-control"
+              formControlName="newPassword"
+              [class.is-invalid]="pwf['newPassword'].errors && pwf['newPassword'].touched"
+              placeholder="Minimum 6 karaktera"
+            />
+            <div class="invalid-feedback" *ngIf="pwf['newPassword'].errors && pwf['newPassword'].touched">
+              <div *ngIf="pwf['newPassword'].errors?.['required']">Lozinka je obavezna.</div>
+              <div *ngIf="pwf['newPassword'].errors?.['minlength']">Lozinka mora imati minimum 6 karaktera.</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Potvrdi Lozinku</label>
+            <input 
+              type="password" 
+              id="confirmPassword"
+              class="form-control"
+              formControlName="confirmPassword"
+              [class.is-invalid]="pwf['confirmPassword']. errors && pwf['confirmPassword']. touched"
+              placeholder="Ponovi novu lozinku"
+            />
+            <div class="invalid-feedback" *ngIf="pwf['confirmPassword']. errors && pwf['confirmPassword']. touched">
+              <div *ngIf="pwf['confirmPassword'].errors?.['required']">Potvrda lozinke je obavezna.</div>
+              <div *ngIf="pwf['confirmPassword'].errors?. ['passwordMismatch']">Lozinke se ne podudaraju.</div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button 
+              type="button" 
+              class="btn btn-success" 
+              (click)="changePassword()"
+              [disabled]="loading || passwordForm.invalid"
+            >
+              {{ loading ? 'Mijenjam.. .' : 'Promijeni' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary" 
+              (click)="togglePasswordMode()"
+              [disabled]="loading"
+            >
+              Odustani
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h2>Tema</h2>
+      <p class="info-text">Izaberi temu koja ti odgovara</p>
+      <app-theme-switcher></app-theme-switcher>
+    </div>
+
+    <div class="profile-card">
+      <h2>Sesija</h2>
+      <p class="info-text">Odjavi se sa svog naloga</p>
+      <button class="btn btn-danger" (click)="logout()">
+        Odjavi se
+      </button>
+    </div>
+
+  </div>
+</div>
