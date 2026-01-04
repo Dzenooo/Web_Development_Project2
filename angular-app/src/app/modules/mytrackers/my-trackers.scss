@@ -1,0 +1,75 @@
+.my-trackers-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trackers-header {
+  margin-bottom: 40px;
+  text-align:  center;
+
+  h1 {
+    margin: 0 0 10px 0;
+    color:  var(--text-primary);
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 16px;
+  }
+}
+
+.trackers-grid {
+  display: grid;
+  grid-template-columns:  repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.tracker-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+
+  &:hover:not(.disabled) {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+      box-shadow: var(--shadow-sm);
+      border-color: var(--border-color);
+    }
+  }
+}
+
+.tracker-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.tracker-card h3 {
+  margin: 0 0 10px 0;
+  color:  var(--text-primary);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tracker-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}

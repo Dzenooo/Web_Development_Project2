@@ -18,7 +18,12 @@ export class DashboardComponent {
   ) {}
 
   async logout() {
-    await this.authService.logout();
-    this.router.navigate(['/login']);
+    
+  document.body.classList.remove('theme-light', 'theme-dark', 'theme-rainbow');
+  document.body.classList.add('theme-light');
+  
+  this.authService.logout();
+  this.router.navigate(['/login']);
+
   }
 }

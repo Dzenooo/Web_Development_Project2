@@ -1,0 +1,170 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>💧 Water Tracker</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+      
+      <!-- GOAL SECTION -->
+      <div class="goal-section">
+        <label>Daily Goal (ml)</label>
+        <div class="goal-input-group">
+          <input 
+            type="number" 
+            [(ngModel)]="newGoal" 
+            min="0"
+            class="form-control"
+          />
+          <button 
+            class="btn btn-primary" 
+            (click)="updateGoal()"
+            [disabled]="loading"
+          >
+            Update Goal
+          </button>
+        </div>
+      </div>
+
+      <!-- QUICK ADD SECTION -->
+      <div class="quick-add-section">
+        <h3>Quick Add</h3>
+        <div class="quick-buttons">
+          <button 
+            class="btn btn-secondary" 
+            (click)="addWater(250)"
+            [disabled]="loading"
+          >
+            +250ml
+          </button>
+          <button 
+            class="btn btn-secondary" 
+            (click)="addWater(500)"
+            [disabled]="loading"
+          >
+            +500ml
+          </button>
+          <button 
+            class="btn btn-secondary" 
+            (click)="addWater(750)"
+            [disabled]="loading"
+          >
+            +750ml
+          </button>
+          <button 
+            class="btn btn-secondary" 
+            (click)="addWater(1000)"
+            [disabled]="loading"
+          >
+            +1000ml
+          </button>
+        </div>
+
+        <!-- CUSTOM ADD -->
+        <div class="custom-add">
+          <label>Custom Amount (ml)</label>
+          <div class="custom-input-group">
+            <input 
+              type="number" 
+              [(ngModel)]="customAmount" 
+              min="0"
+              class="form-control"
+              placeholder="Enter amount"
+            />
+            <button 
+              class="btn btn-primary" 
+              (click)="addWater(customAmount)"
+              [disabled]="loading || customAmount <= 0"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATE SELECTOR -->
+      <div class="date-selector">
+       
+        <input 
+          type="date" 
+          [value]="selectedDate" 
+          (change)="onDateChange($event)"
+          class="date-input"
+        />
+        
+        
+      </div>
+
+      <!-- SUMMARY SECTION - UKLONJEN *ngIf="dailyLog" -->
+      <div class="summary-section">
+        <h3>{{ selectedDate || 'Loading...' }}</h3>
+        <div class="summary-stats">
+          <div class="stat-item">
+            <span class="stat-label">Goal</span>
+            <span class="stat-value">{{ goal }}ml</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total</span>
+            <span class="stat-value primary">{{ totalToday }}ml</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Remaining</span>
+            <span class="stat-value" [class.success]="totalToday >= goal">
+              {{ totalToday >= goal ? 0 : goal - totalToday }}ml
+            </span>
+          </div>
+        </div>
+
+        <p class="success-text" *ngIf="totalToday >= goal">
+          🎉 Goal achieved! 
+        </p>
+      </div>
+
+      <!-- ENTRIES SECTION -->
+      <div class="entries-section" *ngIf="entries && entries.length > 0">
+        <h3>Today's Entries</h3>
+        <div class="entries-list">
+          <div class="entry-item" *ngFor="let entry of entries">
+            <span class="entry-time">{{ entry.timestamp }}</span>
+            <span class="entry-amount">{{ entry. amount }}ml</span>
+            <button 
+              class="delete-btn" 
+              (click)="deleteEntry(entry.id)"
+              [disabled]="loading"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NO ENTRIES -->
+      <div class="no-entries" *ngIf="! entries || entries.length === 0">
+        <p>No water logged for this date.</p>
+      </div>
+
+      <!-- CHART SECTION -->
+      <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
+        <h3>📊 Statistics (Last 30 Days)</h3>
+        <div class="simple-chart">
+          <div 
+            class="chart-bar" 
+            *ngFor="let log of allLogs. slice(0, 30).reverse()"
+            [title]="log.date + ': ' + log.totalToday + 'ml / ' + log.goal + 'ml'"
+          >
+            <div 
+             class="chart-bar-fill" 
+             [style.height.%]="log.goal > 0 ? (log.totalToday / log.goal) * 100 : 0"
+             [attr.data-height]="log.totalToday + 'ml / ' + log.goal + 'ml'"
+            ></div>
+            <span class="chart-label">{{ log.date. substring(8) }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

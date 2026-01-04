@@ -1,0 +1,35 @@
+<div class="my-trackers-container">
+  
+  <div class="trackers-header">
+    <h1>My Trackers</h1>
+    <p>Track your daily habits and goals</p>
+  </div>
+
+  <div class="trackers-grid">
+    
+    <div class="tracker-card" (click)="openWaterTracker()">
+      <div class="tracker-icon">💧</div>
+      <h3>Water Tracker</h3>
+      <p>Track your daily water intake</p>
+    </div>
+
+    <div class="tracker-card disabled">
+      <div class="tracker-icon">🏃</div>
+      <h3>Exercise Tracker</h3>
+      <p>Coming soon...</p>
+    </div>
+
+    <div class="tracker-card disabled">
+      <div class="tracker-icon">📝</div>
+      <h3>Habit Tracker</h3>
+      <p>Coming soon...</p>
+    </div>
+
+  </div>
+
+</div>
+
+<app-water-tracker-popup 
+  *ngIf="showWaterPopup"
+  (close)="closeWaterTracker()">
+</app-water-tracker-popup>
