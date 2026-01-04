@@ -13,6 +13,8 @@ import {
 import { Auth } from '@angular/fire/auth';
 import { WaterEntry, DailyWaterLog } from '../models/water-entry.model';
 import { DailyMoodLog, MoodEntry } from '../models/mood-entry.model';
+import { DailySleepLog, SleepEntry } from '../models/sleep-entry.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,17 +26,15 @@ export class TrackerService {
     private auth: Auth
   ) {}
 
-  // ==========================================
-  // HELPER FUNCTION - Get Current User ID
-  // ==========================================
+
 
   private getCurrentUserId(): string | null {
     return this.auth.currentUser?.uid || null;
   }
 
-  // ==========================================
-  // GENERIC TRACKER FUNCTIONS (Stare funkcije)
-  // ==========================================
+  
+  // GENERIC TRACKER FUNCTIONS 
+  
 
   async getTrackerData(trackerName: string) {
     const user = this.auth.currentUser;
@@ -81,9 +81,9 @@ export class TrackerService {
     });
   }
 
-  // ==========================================
+  
   // WATER TRACKER FUNCTIONS
-  // ==========================================
+  
 
   async getWaterLogForDate(date: string): Promise<DailyWaterLog | null> {
     const user = this.auth.currentUser;
@@ -268,9 +268,9 @@ export class TrackerService {
     }
   }
 
-  // ==========================================
+  
   // MOOD TRACKER FUNCTIONS
-  // ==========================================
+  
 
   async getMoodLogForDate(date:  string): Promise<DailyMoodLog | null> {
   const userId = this.getCurrentUserId();
@@ -316,7 +316,7 @@ export class TrackerService {
   };
 
   try {
-    // NOVI PATH: 
+    
     const docRef = doc(this.firestore, `users/${userId}/mood/${date}`);
     const docSnap = await getDoc(docRef);
 
@@ -344,7 +344,7 @@ export class TrackerService {
   if (!userId) return false;
 
   try {
-    // NOVI PATH:
+    
     const docRef = doc(this.firestore, `users/${userId}/mood/${date}`);
     const docSnap = await getDoc(docRef);
 
@@ -371,7 +371,7 @@ export class TrackerService {
   if (!userId) return [];
 
   try {
-    // NOVI PATH:
+    
     const collectionRef = collection(this.firestore, `users/${userId}/mood`);
     const querySnapshot = await getDocs(collectionRef);
 
@@ -388,4 +388,119 @@ export class TrackerService {
     return [];
   }
 }
+
+async getSleepLogForDate(date: string): Promise<DailySleepLog | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/sleep/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as DailySleepLog;
+    } else {
+      return {
+        date: date,
+        totalToday: 0,
+        entries: []
+      };
+    }
+  } catch (error) {
+    console.error('Error getting sleep log:', error);
+    return null;
+  }
+}
+
+async addSleepEntry(date: string, hours: number): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  const newEntry: SleepEntry = {
+    id: Date.now().toString(),
+    timestamp: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+    hours: hours,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    const docRef = doc(this. firestore, `users/${userId}/sleep/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const existingData = docSnap.data() as DailySleepLog;
+      await updateDoc(docRef, {
+        entries: [... existingData.entries, newEntry],
+        totalToday: existingData.totalToday + hours
+      });
+    } else {
+      await setDoc(docRef, {
+        date:  date,
+        totalToday:  hours,
+        entries: [newEntry]
+      });
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error adding sleep entry:', error);
+    return false;
+  }
+}
+
+async deleteSleepEntry(date: string, entryId: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this. firestore, `users/${userId}/sleep/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const existingData = docSnap.data() as DailySleepLog;
+      const entryToDelete = existingData.entries. find(e => e.id === entryId);
+      
+      if (! entryToDelete) return false;
+
+      const updatedEntries = existingData. entries.filter(e => e. id !== entryId);
+      const updatedTotal = existingData.totalToday - entryToDelete.hours;
+
+      await updateDoc(docRef, {
+        entries: updatedEntries,
+        totalToday: updatedTotal
+      });
+
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error deleting sleep entry:', error);
+    return false;
+  }
+}
+
+async getAllSleepLogs(): Promise<DailySleepLog[]> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return [];
+
+  try {
+    const collectionRef = collection(this.firestore, `users/${userId}/sleep`);
+    const querySnapshot = await getDocs(collectionRef);
+
+    const logs: DailySleepLog[] = [];
+    querySnapshot.forEach((doc) => {
+      logs.push(doc.data() as DailySleepLog);
+    });
+
+    logs.sort((a, b) => a.date.localeCompare(b.date));
+
+    return logs;
+  } catch (error) {
+    console.error('Error getting all sleep logs:', error);
+    return [];
+  }
+}
+
+
 }

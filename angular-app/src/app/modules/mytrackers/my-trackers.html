@@ -19,6 +19,12 @@
       <p>Track your emotions... </p>
     </div>
 
+    <div class="tracker-card" (click)="openSleepTracker()">
+      <div class="tracker-icon">😴</div>
+      <h3>Sleep Tracker</h3>
+      <p>Prati svoje spavanje</p>
+    </div>
+
     <div class="tracker-card disabled">
       <div class="tracker-icon">🏃</div>
       <h3>Exercise Tracker</h3>
@@ -44,3 +50,8 @@
   *ngIf="showMoodPopup"
   (close)="closeMoodTracker()">
 </app-mood-tracker-popup>
+
+<app-sleep-tracker-popup
+  *ngIf="showSleepPopup"
+  (close)="closeSleepTracker()">
+</app-sleep-tracker-popup>
