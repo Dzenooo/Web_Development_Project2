@@ -4,11 +4,12 @@ import { WaterTrackerPopupComponent } from './components/water-tracker-popup/wat
 import { MoodTrackerPopupComponent } from './components/mood-tracker-popup/mood-tracker-popup';
 import { SleepTrackerPopupComponent } from './components/sleep-tracker-popup/sleep-tracker-popup';
 import { ExerciseTrackerPopupComponent } from './components/exercise-tracker-popup/exercise-tracker-popup';
+import { TaskPlannerPopupComponent } from './components/task-planner-popup/task-planner-popup';
 
 @Component({
   selector: 'app-my-trackers',
   standalone: true,
-  imports: [CommonModule, WaterTrackerPopupComponent, MoodTrackerPopupComponent, SleepTrackerPopupComponent, ExerciseTrackerPopupComponent],
+  imports: [CommonModule, WaterTrackerPopupComponent, MoodTrackerPopupComponent, SleepTrackerPopupComponent, ExerciseTrackerPopupComponent, TaskPlannerPopupComponent],
   templateUrl: './my-trackers.html',
   styleUrl: './my-trackers.scss'
 })
@@ -18,6 +19,7 @@ export class MyTrackersComponent {
   showMoodPopup: boolean = false;
   showSleepPopup: boolean = false; 
   showExercisePopup: boolean = false;
+  showTaskPlannerPopup: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -58,6 +60,16 @@ openExerciseTracker() {
 
 closeExerciseTracker() {
   this.showExercisePopup = false;
+  this.cdr.detectChanges();
+}
+
+openTaskPlanner() {
+  this.showTaskPlannerPopup = true;
+  this.cdr.detectChanges();
+}
+
+closeTaskPlanner() {
+  this.showTaskPlannerPopup = false;
   this.cdr.detectChanges();
 }
 }

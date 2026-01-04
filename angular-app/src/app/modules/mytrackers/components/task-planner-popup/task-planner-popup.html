@@ -1,0 +1,118 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>📝 Task Planner</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+      
+    
+      <div class="add-task-section">
+        <label>➕ Dodaj novi task</label>
+        <div class="add-task-group">
+          <input 
+            type="text" 
+            [(ngModel)]="newTaskName" 
+            class="form-control"
+            placeholder="Naziv taska..."
+            [disabled]="loading"
+            (keyup.enter)="addTask()"
+          />
+          <button 
+            class="btn btn-primary" 
+            (click)="addTask()"
+            [disabled]="loading"
+          >
+            Dodaj
+          </button>
+        </div>
+      </div>
+
+    >
+      <div class="date-selector">
+        <input 
+          type="date" 
+          [value]="selectedDate" 
+          (change)="onDateChange($event)"
+          class="date-input"
+        />
+      </div>
+
+
+      <div class="tasks-section" *ngIf="tasks && tasks.length > 0">
+        <h3>📋 Današnji taskovi</h3>
+        <div class="tasks-list">
+          <div 
+            class="task-item" 
+            *ngFor="let task of tasks"
+            [class.completed]="task.completed"
+          >
+            <label class="checkbox-container">
+              <input 
+                type="checkbox" 
+                [checked]="task.completed"
+                (change)="toggleTask(task.id)"
+                [disabled]="loading"
+              />
+              <span class="checkmark" [class.checked]="task.completed">
+                {{ task.completed ? '☑' : '☐' }}
+              </span>
+            </label>
+            
+            <span class="task-name" [class.completed-text]="task.completed">
+              {{ task.name }}
+            </span>
+            
+            <button 
+              class="delete-btn" 
+              (click)="deleteTask(task.id)"
+              [disabled]="loading"
+            >
+              Obriši
+            </button>
+          </div>
+        </div>
+        
+     
+        <div class="completion-section">
+          <div class="completion-bar-container">
+            <div 
+              class="completion-bar-fill" 
+              [style. width.%]="completionRate"
+            ></div>
+          </div>
+          <p class="completion-text">
+            <strong>Completed:  {{ completedTasks }}/{{ totalTasks }} ({{ completionRate }}%) ⭐</strong>
+          </p>
+        </div>
+      </div>
+
+
+      <div class="no-tasks" *ngIf="! tasks || tasks.length === 0">
+        <p>Nema taskova za ovaj datum.</p>
+      </div>
+
+   
+      <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
+        <h3>Completion Rate (Last 30 Days)</h3>
+        <div class="simple-chart">
+          <div 
+            class="chart-bar" 
+            *ngFor="let log of allLogs. slice(0, 30).reverse()"
+            [title]="log.date + ': ' + log.completedTasks + '/' + log.totalTasks + ' (' + log.completionRate + '%)'"
+          >
+            <div 
+              class="chart-bar-fill" 
+              [style]="'height: ' + log.completionRate + '%'"
+            ></div>
+            <span class="chart-label">{{ log. date. substring(8) }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

@@ -33,10 +33,10 @@
       <p>Prati svoje vježbe</p>
     </div>
 
-    <div class="tracker-card disabled">
+    <div class="tracker-card" (click)="openTaskPlanner()">
       <div class="tracker-icon">📝</div>
-      <h3>Habit Tracker</h3>
-      <p>Coming soon...</p>
+      <h3>Task Planner</h3>
+      <p>Prati svoje dnevne obaveze</p>
     </div>
 
   </div>
@@ -62,3 +62,8 @@
   *ngIf="showExercisePopup"
   (close)="closeExerciseTracker()">
 </app-exercise-tracker-popup>
+
+<app-task-planner-popup
+  *ngIf="showTaskPlannerPopup"
+  (close)="closeTaskPlanner()">
+</app-task-planner-popup>

@@ -15,6 +15,7 @@ import { WaterEntry, DailyWaterLog } from '../models/water-entry.model';
 import { DailyMoodLog, MoodEntry } from '../models/mood-entry.model';
 import { DailySleepLog, SleepEntry } from '../models/sleep-entry.model';
 import { DailyExerciseLog, ExerciseEntry } from '../models/exercise-entry.model';
+import { DailyTaskLog, Task } from '../models/task-entry.model';
 
 
 @Injectable({
@@ -618,6 +619,169 @@ async getAllExerciseLogs(): Promise<DailyExerciseLog[]> {
     return logs;
   } catch (error) {
     console.error('Error getting all exercise logs:', error);
+    return [];
+  }
+}
+
+
+
+// TASK PLANNER FUNCTIONS
+
+
+async getTasksForDate(date: string): Promise<DailyTaskLog | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/tasks/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as DailyTaskLog;
+    } else {
+      return {
+        date: date,
+        tasks: [],
+        totalTasks: 0,
+        completedTasks: 0,
+        completionRate: 0
+      };
+    }
+  } catch (error) {
+    console.error('Error getting tasks:', error);
+    return null;
+  }
+}
+
+async addTask(date: string, name: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  const newTask: Task = {
+    id: Date.now().toString(),
+    name: name,
+    completed: false,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/tasks/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    let updatedTasks: Task[];
+    let totalTasks: number;
+    let completedTasks: number;
+
+    if (docSnap.exists()) {
+      const existingData = docSnap.data() as DailyTaskLog;
+      updatedTasks = [...existingData.tasks, newTask];
+      totalTasks = updatedTasks.length;
+      completedTasks = updatedTasks.filter((t:  Task) => t.completed).length;
+    } else {
+      updatedTasks = [newTask];
+      totalTasks = 1;
+      completedTasks = 0;
+    }
+
+    const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+    await setDoc(docRef, {
+      date:  date,
+      tasks: updatedTasks,
+      totalTasks: totalTasks,
+      completedTasks: completedTasks,
+      completionRate: completionRate
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error adding task:', error);
+    return false;
+  }
+}
+
+async toggleTask(date: string, taskId: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/tasks/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (! docSnap.exists()) return false;
+
+    const existingData = docSnap.data() as DailyTaskLog;
+    const updatedTasks = existingData. tasks.map((t: Task) => 
+      t.id === taskId ? { ...t, completed: ! t.completed } : t
+    );
+
+    const totalTasks = updatedTasks.length;
+    const completedTasks = updatedTasks.filter((t: Task) => t.completed).length;
+    const completionRate = totalTasks > 0 ? Math. round((completedTasks / totalTasks) * 100) : 0;
+
+    await updateDoc(docRef, {
+      tasks: updatedTasks,
+      totalTasks: totalTasks,
+      completedTasks:  completedTasks,
+      completionRate: completionRate
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error toggling task:', error);
+    return false;
+  }
+}
+
+async deleteTask(date: string, taskId: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/tasks/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) return false;
+
+    const existingData = docSnap.data() as DailyTaskLog;
+    const updatedTasks = existingData.tasks.filter((t: Task) => t.id !== taskId);
+
+    const totalTasks = updatedTasks.length;
+    const completedTasks = updatedTasks.filter((t: Task) => t.completed).length;
+    const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+    await updateDoc(docRef, {
+      tasks: updatedTasks,
+      totalTasks: totalTasks,
+      completedTasks: completedTasks,
+      completionRate: completionRate
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    return false;
+  }
+}
+
+async getAllTaskLogs(): Promise<DailyTaskLog[]> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return [];
+
+  try {
+    const collectionRef = collection(this.firestore, `users/${userId}/tasks`);
+    const querySnapshot = await getDocs(collectionRef);
+
+    const logs: DailyTaskLog[] = [];
+    querySnapshot.forEach((doc) => {
+      logs.push(doc.data() as DailyTaskLog);
+    });
+
+    logs.sort((a, b) => a.date.localeCompare(b.date));
+
+    return logs;
+  } catch (error) {
+    console.error('Error getting all task logs:', error);
     return [];
   }
 }
