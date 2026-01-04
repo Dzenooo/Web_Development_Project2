@@ -14,6 +14,7 @@ import { Auth } from '@angular/fire/auth';
 import { WaterEntry, DailyWaterLog } from '../models/water-entry.model';
 import { DailyMoodLog, MoodEntry } from '../models/mood-entry.model';
 import { DailySleepLog, SleepEntry } from '../models/sleep-entry.model';
+import { DailyExerciseLog, ExerciseEntry } from '../models/exercise-entry.model';
 
 
 @Injectable({
@@ -498,6 +499,125 @@ async getAllSleepLogs(): Promise<DailySleepLog[]> {
     return logs;
   } catch (error) {
     console.error('Error getting all sleep logs:', error);
+    return [];
+  }
+}
+
+
+
+// EXERCISE TRACKER FUNCTIONS
+
+
+async getExerciseLogForDate(date: string): Promise<DailyExerciseLog | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/exercise/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as DailyExerciseLog;
+    } else {
+      return {
+        date: date,
+        totalToday: 0,
+        entries: []
+      };
+    }
+  } catch (error) {
+    console.error('Error getting exercise log:', error);
+    return null;
+  }
+}
+
+async addExerciseEntry(date: string, minutes: number, type: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  const newEntry: ExerciseEntry = {
+    id: Date.now().toString(),
+    timestamp: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+    minutes: minutes,
+    type: type,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/exercise/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const existingData = docSnap.data() as DailyExerciseLog;
+      await updateDoc(docRef, {
+        entries: [...existingData.entries, newEntry],
+        totalToday: existingData.totalToday + minutes
+      });
+    } else {
+      await setDoc(docRef, {
+        date:  date,
+        totalToday:  minutes,
+        entries: [newEntry]
+      });
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error adding exercise entry:', error);
+    return false;
+  }
+}
+
+async deleteExerciseEntry(date: string, entryId: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/exercise/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const existingData = docSnap.data() as DailyExerciseLog;
+      const entryToDelete = existingData.entries. find(e => e.id === entryId);
+      
+      if (! entryToDelete) return false;
+
+      const updatedEntries = existingData. entries.filter(e => e. id !== entryId);
+      const updatedTotal = existingData.totalToday - entryToDelete.minutes;
+
+      await updateDoc(docRef, {
+        entries: updatedEntries,
+        totalToday: updatedTotal
+      });
+
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error deleting exercise entry:', error);
+    return false;
+  }
+}
+
+async getAllExerciseLogs(): Promise<DailyExerciseLog[]> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return [];
+
+  try {
+    const collectionRef = collection(this.firestore, `users/${userId}/exercise`);
+    const querySnapshot = await getDocs(collectionRef);
+
+    const logs: DailyExerciseLog[] = [];
+    querySnapshot.forEach((doc) => {
+      logs.push(doc.data() as DailyExerciseLog);
+    });
+
+    logs.sort((a, b) => a.date.localeCompare(b.date));
+
+    return logs;
+  } catch (error) {
+    console.error('Error getting all exercise logs:', error);
     return [];
   }
 }

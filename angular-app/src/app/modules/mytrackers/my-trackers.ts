@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { WaterTrackerPopupComponent } from './components/water-tracker-popup/water-tracker-popup';
 import { MoodTrackerPopupComponent } from './components/mood-tracker-popup/mood-tracker-popup';
 import { SleepTrackerPopupComponent } from './components/sleep-tracker-popup/sleep-tracker-popup';
+import { ExerciseTrackerPopupComponent } from './components/exercise-tracker-popup/exercise-tracker-popup';
 
 @Component({
   selector: 'app-my-trackers',
   standalone: true,
-  imports: [CommonModule, WaterTrackerPopupComponent, MoodTrackerPopupComponent, SleepTrackerPopupComponent],
+  imports: [CommonModule, WaterTrackerPopupComponent, MoodTrackerPopupComponent, SleepTrackerPopupComponent, ExerciseTrackerPopupComponent],
   templateUrl: './my-trackers.html',
   styleUrl: './my-trackers.scss'
 })
@@ -16,6 +17,7 @@ export class MyTrackersComponent {
   showWaterPopup:  boolean = false;
   showMoodPopup: boolean = false;
   showSleepPopup: boolean = false; 
+  showExercisePopup: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -46,6 +48,16 @@ export class MyTrackersComponent {
 
 closeSleepTracker() {
   this.showSleepPopup = false;
+  this.cdr.detectChanges();
+}
+
+openExerciseTracker() {
+  this.showExercisePopup = true;
+  this.cdr.detectChanges();
+}
+
+closeExerciseTracker() {
+  this.showExercisePopup = false;
   this.cdr.detectChanges();
 }
 }

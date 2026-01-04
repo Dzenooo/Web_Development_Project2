@@ -25,10 +25,12 @@
       <p>Prati svoje spavanje</p>
     </div>
 
-    <div class="tracker-card disabled">
+    
+
+    <div class="tracker-card" (click)="openExerciseTracker()">
       <div class="tracker-icon">🏃</div>
       <h3>Exercise Tracker</h3>
-      <p>Coming soon...</p>
+      <p>Prati svoje vježbe</p>
     </div>
 
     <div class="tracker-card disabled">
@@ -55,3 +57,8 @@
   *ngIf="showSleepPopup"
   (close)="closeSleepTracker()">
 </app-sleep-tracker-popup>
+
+<app-exercise-tracker-popup
+  *ngIf="showExercisePopup"
+  (close)="closeExerciseTracker()">
+</app-exercise-tracker-popup>

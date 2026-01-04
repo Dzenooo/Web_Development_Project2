@@ -1,0 +1,116 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>🏃 Exercise Tracker</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+      
+      
+      <div class="custom-add">
+        <label>💪 Dodaj vježbu</label>
+        
+        <div class="exercise-inputs">
+          <div class="input-group">
+            <label class="small-label">Minuta: </label>
+            <input 
+              type="number" 
+              [(ngModel)]="customMinutes" 
+              min="1"
+              step="1"
+              max="999"
+              class="form-control"
+              placeholder="30"
+              [disabled]="loading"
+            />
+          </div>
+
+          <div class="input-group exercise-type-group">
+            <label class="small-label">Vrsta vježbe:</label>
+            <input 
+              type="text" 
+              [(ngModel)]="exerciseType" 
+              class="form-control"
+              placeholder="Trčanje, teretana, yoga..."
+              [disabled]="loading"
+            />
+          </div>
+        </div>
+
+        <button 
+          class="btn btn-primary full-width" 
+          (click)="addExercise()"
+          [disabled]="loading"
+        >
+          Dodaj vježbu
+        </button>
+      </div>
+
+    
+      <div class="date-selector">
+        <input 
+          type="date" 
+          [value]="selectedDate" 
+          (change)="onDateChange($event)"
+          class="date-input"
+        />
+      </div>
+
+  
+      <div class="entries-section" *ngIf="entries && entries.length > 0">
+        <h3>Današnji log</h3>
+        <div class="entries-list">
+          <div class="entry-item" *ngFor="let entry of entries">
+            <span class="entry-icon">🏃</span>
+            <div class="entry-details">
+              <span class="entry-time">{{ entry.timestamp }}</span>
+              <span class="entry-separator">-</span>
+              <span class="entry-duration">{{ entry.minutes }}min</span>
+              <span class="entry-separator">-</span>
+              <span class="entry-type">{{ entry.type }}</span>
+            </div>
+            <button 
+              class="delete-btn" 
+              (click)="deleteEntry(entry.id)"
+              [disabled]="loading"
+            >
+              Obriši
+            </button>
+          </div>
+        </div>
+        
+      
+        <div class="total-section">
+          <strong>Ukupno danas:  {{ formatMinutes(totalToday) }}</strong>
+        </div>
+      </div>
+
+      
+      <div class="no-entries" *ngIf="! entries || entries.length === 0">
+        <p>Nema vježbi za ovaj datum. </p>
+      </div>
+
+   
+      <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
+        <h3>Historija (Zadnjih 30 dana)</h3>
+        <div class="simple-chart">
+          <div 
+            class="chart-bar" 
+            *ngFor="let log of allLogs. slice(0, 30).reverse()"
+            [title]="log.date + ': ' + formatMinutes(log.totalToday)"
+          >
+            <div 
+              class="chart-bar-fill" 
+              [style]="'height: ' + ((log.totalToday / 180) * 100) + '%'"
+            ></div>
+            <span class="chart-label">{{ log.date. substring(8) }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
