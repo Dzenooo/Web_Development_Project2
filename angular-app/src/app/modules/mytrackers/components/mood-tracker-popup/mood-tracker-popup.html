@@ -1,0 +1,103 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>😊 Mood Tracker</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+      
+      <!-- MOOD SELECTOR -->
+      <div class="mood-section">
+        <h3>Kako se osjećate? </h3>
+        <div class="mood-buttons">
+          <button 
+            *ngFor="let mood of moods"
+            class="mood-btn"
+            [class.active]="selectedMood === mood. value"
+            (click)="selectMood(mood.value)"
+            [disabled]="loading"
+          >
+            <span class="mood-emoji">{{ mood.emoji }}</span>
+            <span class="mood-label">{{ mood.label }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NOTE INPUT -->
+      <div class="note-section">
+        <label>Ostavite bilješku (opcionalno)</label>
+        <textarea 
+          [(ngModel)]="note" 
+          class="form-control"
+          placeholder="Napišite nešto..."
+          rows="3"
+          [disabled]="loading"
+        ></textarea>
+        <button 
+          class="btn btn-primary" 
+          (click)="addMood()"
+          [disabled]="loading"
+        >
+          Sačuvaj
+        </button>
+      </div>
+
+      <!-- DATE SELECTOR -->
+      <div class="date-selector">
+        <input 
+          type="date" 
+          [value]="selectedDate" 
+          (change)="onDateChange($event)"
+          class="date-input"
+        />
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="summary-section">
+        <h3>{{ selectedDate }}</h3>
+        <p *ngIf="entries.length === 0" class="no-entries">Nema unosa za ovaj datum.</p>
+      </div>
+
+      <!-- ENTRIES LIST -->
+      <div class="entries-section" *ngIf="entries && entries.length > 0">
+        <h3>Današnje raspoloženje</h3>
+        <div class="entries-list">
+          <div class="entry-item" *ngFor="let entry of entries">
+            <span class="entry-emoji">{{ entry.emoji }}</span>
+            <div class="entry-details">
+              <span class="entry-time">{{ entry.timestamp }}</span>
+              <span class="entry-mood">{{ entry.mood }}</span>
+              <span class="entry-note" *ngIf="entry.note">{{ entry.note }}</span>
+            </div>
+            <button 
+              class="delete-btn" 
+              (click)="deleteEntry(entry.id)"
+              [disabled]="loading"
+            >
+              Obriši
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART -->
+      <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
+        <h3>Mood History (Zadnjih 30 dana)</h3>
+        <div class="mood-chart">
+          <div 
+            class="mood-chart-item" 
+            *ngFor="let log of allLogs.slice(0, 30).reverse()"
+            [title]="log.date + ': ' + (log.entries.length > 0 ? log.entries[log.entries.length - 1].mood : 'No mood')"
+          >
+            <span class="chart-emoji">{{ getMoodForDate(log.date) }}</span>
+            <span class="chart-label">{{ log.date.substring(8) }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

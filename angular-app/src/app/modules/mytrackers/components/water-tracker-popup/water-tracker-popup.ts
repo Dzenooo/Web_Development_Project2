@@ -10,8 +10,7 @@ import { DailyWaterLog, WaterEntry } from '../../../../core/models/water-entry.m
   imports: [CommonModule, FormsModule],
   templateUrl: './water-tracker-popup.html',
   styleUrl: './water-tracker-popup.scss'
-})
-export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
+})export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
   
   @Output() close = new EventEmitter<void>();
 
@@ -19,7 +18,7 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
   dailyLog: DailyWaterLog | null = null;
   
   goal: number = 3000;
-  totalToday:  number = 0;
+  totalToday: number = 0;
   entries: WaterEntry[] = [];
   
   customAmount: number = 0;
@@ -32,7 +31,7 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
 
   constructor(
     private trackerService: TrackerService,
-    private cdr: ChangeDetectorRef
+    private cdr:  ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -47,7 +46,7 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
       await this.loadDataForDate(this.selectedDate);
       await this.loadAllLogs();
     } catch (error) {
-      console.error('ERROR u ngOnInit:', error);
+      console.error('❌ ERROR u ngOnInit:', error);
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -85,12 +84,12 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
         this.dailyLog = null;
         this.goal = 3000;
         this.totalToday = 0;
-        this.entries = [];
+        this. entries = [];
         this.newGoal = 3000;
         this.progressPercentage = 0;
       }
     } catch (error) {
-      console.error('ERROR u loadDataForDate:', error);
+      console.error('❌ ERROR u loadDataForDate:', error);
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -99,20 +98,20 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
 
   async loadAllLogs() {
     try {
-      const logs = await this.trackerService.getAllWaterLogs();
+      const logs = await this.trackerService. getAllWaterLogs();
       this.allLogs = logs;
       this.cdr.detectChanges();
     } catch (error) {
-      console.error('ERROR u loadAllLogs:', error);
+      console.error('❌ ERROR u loadAllLogs:', error);
       this.allLogs = [];
     }
   }
 
-  async addWater(amount:  number) {
+  async addWater(amount: number) {
     if (amount <= 0) return;
     
     this.loading = true;
-    const success = await this. trackerService.addWaterEntry(this.selectedDate, amount);
+    const success = await this.trackerService. addWaterEntry(this.selectedDate, amount);
     
     if (success) {
       await this.loadDataForDate(this.selectedDate);
@@ -130,7 +129,7 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
     const success = await this.trackerService.updateWaterGoal(this.selectedDate, this.newGoal);
     
     if (success) {
-      await this.loadDataForDate(this. selectedDate);
+      await this.loadDataForDate(this.selectedDate);
     }
     
     this.loading = false;
@@ -138,10 +137,10 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
 
   async deleteEntry(entryId: string) {
     this.loading = true;
-    const success = await this. trackerService.deleteWaterEntry(this.selectedDate, entryId);
+    const success = await this.trackerService.deleteWaterEntry(this. selectedDate, entryId);
     
     if (success) {
-      await this. loadDataForDate(this.selectedDate);
+      await this.loadDataForDate(this.selectedDate);
       await this.loadAllLogs();
     }
     
@@ -149,12 +148,12 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
   }
 
   changeDate(direction: 'prev' | 'next') {
-    const currentDate = new Date(this. selectedDate);
+    const currentDate = new Date(this.selectedDate);
     
     if (direction === 'prev') {
       currentDate.setDate(currentDate.getDate() - 1);
     } else {
-      currentDate.setDate(currentDate.getDate() + 1);
+      currentDate.setDate(currentDate. getDate() + 1);
     }
     
     const year = currentDate.getFullYear();
@@ -162,19 +161,19 @@ export class WaterTrackerPopupComponent implements OnInit, AfterViewInit {
     const day = currentDate.getDate().toString().padStart(2, '0');
     this.selectedDate = `${year}-${month}-${day}`;
     
-    this.loadDataForDate(this. selectedDate);
+    this.loadDataForDate(this.selectedDate);
   }
 
   onDateChange(event: any) {
     this.selectedDate = event.target.value;
-    this.loadDataForDate(this. selectedDate);
+    this.loadDataForDate(this.selectedDate);
   }
 
   calculateProgress() {
     if (this.goal === 0) {
       this.progressPercentage = 0;
     } else {
-      this.progressPercentage = Math.min((this. totalToday / this.goal) * 100, 100);
+      this.progressPercentage = Math.min((this.totalToday / this. goal) * 100, 100);
     }
   }
 

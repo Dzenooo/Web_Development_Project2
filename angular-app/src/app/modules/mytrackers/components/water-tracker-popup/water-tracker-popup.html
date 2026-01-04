@@ -10,7 +10,7 @@
       
       <!-- GOAL SECTION -->
       <div class="goal-section">
-        <label>Daily Goal (ml)</label>
+        <label>Dnevni cilj (ml)</label>
         <div class="goal-input-group">
           <input 
             type="number" 
@@ -64,21 +64,21 @@
 
         <!-- CUSTOM ADD -->
         <div class="custom-add">
-          <label>Custom Amount (ml)</label>
+          <label>Količina (ml)</label>
           <div class="custom-input-group">
             <input 
               type="number" 
               [(ngModel)]="customAmount" 
               min="0"
               class="form-control"
-              placeholder="Enter amount"
+              placeholder="Unesite količinu"
             />
             <button 
               class="btn btn-primary" 
               (click)="addWater(customAmount)"
               [disabled]="loading || customAmount <= 0"
             >
-              Add
+              Dodaj
             </button>
           </div>
         </div>
@@ -102,15 +102,15 @@
         <h3>{{ selectedDate || 'Loading...' }}</h3>
         <div class="summary-stats">
           <div class="stat-item">
-            <span class="stat-label">Goal</span>
+            <span class="stat-label">Cilj</span>
             <span class="stat-value">{{ goal }}ml</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Total</span>
+            <span class="stat-label">Ukupno</span>
             <span class="stat-value primary">{{ totalToday }}ml</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Remaining</span>
+            <span class="stat-label">Preostalo</span>
             <span class="stat-value" [class.success]="totalToday >= goal">
               {{ totalToday >= goal ? 0 : goal - totalToday }}ml
             </span>
@@ -124,7 +124,7 @@
 
       <!-- ENTRIES SECTION -->
       <div class="entries-section" *ngIf="entries && entries.length > 0">
-        <h3>Today's Entries</h3>
+        <h3>Današnji unosi</h3>
         <div class="entries-list">
           <div class="entry-item" *ngFor="let entry of entries">
             <span class="entry-time">{{ entry.timestamp }}</span>
@@ -134,7 +134,7 @@
               (click)="deleteEntry(entry.id)"
               [disabled]="loading"
             >
-              Delete
+              Obriši
             </button>
           </div>
         </div>
@@ -142,12 +142,12 @@
 
       <!-- NO ENTRIES -->
       <div class="no-entries" *ngIf="! entries || entries.length === 0">
-        <p>No water logged for this date.</p>
+        <p>Nema unosa za ovaj datum.</p>
       </div>
 
       <!-- CHART SECTION -->
       <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
-        <h3>📊 Statistics (Last 30 Days)</h3>
+        <h3>Statistika (Zadnjih 30 dana)</h3>
         <div class="simple-chart">
           <div 
             class="chart-bar" 

@@ -13,6 +13,12 @@
       <p>Track your daily water intake</p>
     </div>
 
+    <div class="tracker-card" (click)="openMoodTracker()">
+      <div class="tracker-icon">😊</div>
+      <h3>Mood Tracker</h3>
+      <p>Track your emotions... </p>
+    </div>
+
     <div class="tracker-card disabled">
       <div class="tracker-icon">🏃</div>
       <h3>Exercise Tracker</h3>
@@ -33,3 +39,8 @@
   *ngIf="showWaterPopup"
   (close)="closeWaterTracker()">
 </app-water-tracker-popup>
+
+<app-mood-tracker-popup 
+  *ngIf="showMoodPopup"
+  (close)="closeMoodTracker()">
+</app-mood-tracker-popup>
