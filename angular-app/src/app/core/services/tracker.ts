@@ -7,6 +7,7 @@ import {
   getDocs,
   setDoc, 
   updateDoc,
+  deleteDoc,
   query,
   orderBy
 } from '@angular/fire/firestore';
@@ -16,6 +17,7 @@ import { DailyMoodLog, MoodEntry } from '../models/mood-entry.model';
 import { DailySleepLog, SleepEntry } from '../models/sleep-entry.model';
 import { DailyExerciseLog, ExerciseEntry } from '../models/exercise-entry.model';
 import { DailyTaskLog, Task } from '../models/task-entry.model';
+import { GratitudeEntry } from '../models/gratitude-entry.model';
 
 
 @Injectable({
@@ -782,6 +784,98 @@ async getAllTaskLogs(): Promise<DailyTaskLog[]> {
     return logs;
   } catch (error) {
     console.error('Error getting all task logs:', error);
+    return [];
+  }
+}
+
+
+// GRATITUDE JOURNAL FUNCTIONS
+
+
+async getGratitudeEntry(date: string): Promise<GratitudeEntry | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/gratitude/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as GratitudeEntry;
+    } else {
+      return {
+        date:  date,
+        entry: '',
+        hasEntry: false,
+        createdAt: '',
+        updatedAt: ''
+      };
+    }
+  } catch (error) {
+    console.error('Error getting gratitude entry:', error);
+    return null;
+  }
+}
+
+async saveGratitudeEntry(date: string, entryText: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/gratitude/${date}`);
+    const docSnap = await getDoc(docRef);
+
+    const now = new Date().toISOString();
+    const gratitudeData:  GratitudeEntry = {
+      date:  date,
+      entry: entryText. trim(),
+      hasEntry: entryText.trim().length > 0,
+      createdAt: docSnap.exists() ? (docSnap.data() as GratitudeEntry).createdAt : now,
+      updatedAt: now
+    };
+
+    await setDoc(docRef, gratitudeData);
+
+    return true;
+  } catch (error) {
+    console.error('Error saving gratitude entry:', error);
+    return false;
+  }
+}
+
+
+async deleteGratitudeEntry(date: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/gratitude/${date}`);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.error('Error deleting gratitude entry:', error);
+    return false;
+  }
+}
+
+async getAllGratitudeEntries(): Promise<GratitudeEntry[]> {
+  const userId = this. getCurrentUserId();
+  if (!userId) return [];
+
+  try {
+    const collectionRef = collection(this.firestore, `users/${userId}/gratitude`);
+    const querySnapshot = await getDocs(collectionRef);
+
+    const entries: GratitudeEntry[] = [];
+    querySnapshot.forEach((doc) => {
+      entries.push(doc.data() as GratitudeEntry);
+    });
+
+    entries.sort((a, b) => a.date.localeCompare(b.date));
+
+    return entries;
+  } catch (error) {
+    console.error('Error getting all gratitude entries:', error);
     return [];
   }
 }

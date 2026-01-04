@@ -39,6 +39,12 @@
       <p>Prati svoje dnevne obaveze</p>
     </div>
 
+    <div class="tracker-card" (click)="openGratitudeJournal()">
+      <div class="tracker-icon">✨</div>
+      <h3>Gratitude Journal</h3>
+      <p>Napiši za što si zahvalan</p>
+    </div>
+
   </div>
 
 </div>
@@ -67,3 +73,8 @@
   *ngIf="showTaskPlannerPopup"
   (close)="closeTaskPlanner()">
 </app-task-planner-popup>
+
+<app-gratitude-journal-popup
+  *ngIf="showGratitudeJournalPopup"
+  (close)="closeGratitudeJournal()">
+</app-gratitude-journal-popup>
