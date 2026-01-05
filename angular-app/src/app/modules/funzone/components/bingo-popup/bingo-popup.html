@@ -1,0 +1,65 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content bingo-popup" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>🎯 BINGO</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body" id="bingo-content">
+      
+      <table class="bingo-table">
+        <tr>
+          <td>Putovao je van zemlje. </td>
+          <td>Letio je avionom.</td>
+          <td>Ima vise od troje brace i sestara</td>
+          <td>Ima pet kucnih ljubimaca</td>
+          <td>Voli jesti kisele krastavce</td>
+        </tr>
+        
+        <tr>
+          <td>Igra kosarku</td>
+          <td>Voli Disney-eve crtane filmove</td>
+          <td>Voli crtati</td>
+          <td>Voli HTML</td>
+          <td>Zna roniti</td>
+        </tr>
+        
+        <tr>
+          <td>Omiljena boja je narandzasta</td>
+          <td>Ne voli plazu</td>
+          <td class="free-space">SLOBODAN PROSTOR</td>
+          <td>Dobar je u matematici</td>
+          <td>Nema kucne ljubimce</td>
+        </tr>
+        
+        <tr>
+          <td>Ne voli cokoladu</td>
+          <td>Boji se pauka</td>
+          <td>Voli peci kolacice</td>
+          <td>Svira instrument</td>
+          <td>Alergican je na macke ili pse</td>
+        </tr>
+        
+        <tr>
+          <td>Slavi rodjendan u oktobru</td>
+          <td>Voli jesti sir</td>
+          <td>Igra online igre</td>
+          <td>Ne voli pizzu</td>
+          <td>Voli pjevati</td>
+        </tr>
+      </table>
+
+      <div class="bingo-instructions">
+        <p><strong>Skupi 5 potpisa zaredom - BINGO!</strong></p>
+        <p>Svaka osoba moze staviti inicijale na vas papir samo dva puta.</p>
+      </div>
+
+      <button class="btn btn-primary" (click)="exportToPDF()">
+        📥 Preuzmi kao PDF
+      </button>
+
+    </div>
+
+  </div>
+</div>

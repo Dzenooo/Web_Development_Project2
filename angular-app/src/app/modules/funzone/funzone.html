@@ -1,0 +1,27 @@
+<div class="funzone-container">
+  
+  <div class="funzone-header">
+    <h1>🎮 Student Fun Zone</h1>
+    <p>Bingo, kviz i kreativni alati</p>
+  </div>
+
+  <div class="funzone-grid">
+    
+    
+    <div class="funzone-card" (click)="openBingo()">
+      <div class="card-icon">🎯</div>
+      <h3>Bingo</h3>
+      <p>Bingo, kralj dobrih cijena!</p>
+    </div>
+
+    
+
+  </div>
+
+</div>
+
+<!-- BINGO POPUP -->
+<app-bingo-popup
+  *ngIf="showBingoPopup"
+  (close)="closeBingo()">
+</app-bingo-popup>
