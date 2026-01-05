@@ -919,4 +919,43 @@ async getWhiteboardCanvas(): Promise<string | null> {
 }
 
 
+
+//VISION BOARD 
+
+async saveVisionBoard(items: any[]): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/visionboard/board`);
+    await setDoc(docRef, {
+      items:  items,
+      lastUpdated: new Date().toISOString()
+    });
+    return true;
+  } catch (error) {
+    console.error('Error saving vision board:', error);
+    return false;
+  }
+}
+
+async getVisionBoard(): Promise<any[] | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/visionboard/board`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data()['items'] || null;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error loading vision board:', error);
+    return null;
+  }
+}
+
+
 }

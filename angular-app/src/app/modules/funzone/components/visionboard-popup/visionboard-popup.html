@@ -1,0 +1,40 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content visionboard-popup" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>📌 Vision Board</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+
+      
+      <div class="success-message" *ngIf="saveSuccess">
+        ✅ Vision Board sačuvan!
+      </div>
+
+    
+      <div class="toolbar">
+        <button (click)="addNote()">+ Post it</button>
+        <button (click)="addImage()">+ Slika</button>
+        <button (click)="addQuote()">+ Citat</button>
+        <button (click)="clearBoard()">Očisti ploču</button>
+      </div>
+
+      
+      <div id="board"></div>
+
+      
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="saveToFirestore()" [disabled]="loading">
+          {{ loading ? 'Čuvanje...' : '💾 Sačuvaj' }}
+        </button>
+        <button class="btn btn-secondary" (click)="exportToPDF()">
+          📥 Export PDF
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>

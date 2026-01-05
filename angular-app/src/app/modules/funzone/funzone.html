@@ -28,6 +28,13 @@
       <p>Crtajte što vam srcu milo!</p>
     </div>
 
+
+    <div class="funzone-card" (click)="openVisionBoard()">
+      <div class="card-icon">📌</div>
+      <h3>Vision Board</h3>
+      <p>Kreirajte svoju viziju!</p>
+    </div>
+
     
 
   </div>
@@ -51,3 +58,9 @@
   *ngIf="showWhiteboardPopup"
   (close)="closeWhiteboard()">
 </app-whiteboard-popup>
+
+
+<app-visionboard-popup
+  *ngIf="showVisionBoardPopup"
+  (close)="closeVisionBoard()">
+</app-visionboard-popup>
