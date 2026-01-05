@@ -1,13 +1,15 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BingoPopupComponent } from './components/bingo-popup/bingo-popup';
+import { QuizPopupComponent } from './components/quiz-popup/quiz-popup';
 
 @Component({
   selector: 'app-funzone',
   standalone: true,
   imports: [
     CommonModule,
-    BingoPopupComponent
+    BingoPopupComponent,
+    QuizPopupComponent
   ],
   templateUrl: './funzone.html',
   styleUrl: './funzone.scss'

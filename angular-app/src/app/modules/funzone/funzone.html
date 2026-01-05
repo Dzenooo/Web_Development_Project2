@@ -15,13 +15,26 @@
     </div>
 
     
+    <div class="funzone-card" (click)="openQuiz()">
+      <div class="card-icon">❓</div>
+      <h3>Kviz</h3>
+      <p>Testirajte svoje znanje HTML-a</p>
+    </div>
+
+    
 
   </div>
 
 </div>
 
-<!-- BINGO POPUP -->
+
 <app-bingo-popup
   *ngIf="showBingoPopup"
   (close)="closeBingo()">
 </app-bingo-popup>
+
+
+<app-quiz-popup
+  *ngIf="showQuizPopup"
+  (close)="closeQuiz()">
+</app-quiz-popup>

@@ -1,0 +1,86 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content quiz-popup" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>❓ Kviz</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+      
+      
+      <div class="quiz-intro" *ngIf="! showResult">
+        <p><strong>Priprema za završni ispit iz Web Programiranja!</strong></p>
+        <p>Testirajte svoje znanje o HTML-u i osnovama weba. </p>
+        <p class="info-text">Odaberite tačan odgovor(e) za svako pitanje.  Neki mogu imati više tačnih opcija! </p>
+      </div>
+
+      
+      <div class="quiz-questions" *ngIf="! showResult">
+        <div class="question-block" *ngFor="let q of questions; let i = index">
+          <h3>{{ i + 1 }}. {{ q.question }}</h3>
+          
+          
+          <div class="options" *ngIf="q.type === 'radio'">
+            <label *ngFor="let option of q. options" class="option-label">
+              <input 
+                type="radio" 
+                [name]="q.id"
+                [value]="option. value"
+                [checked]="isChecked(q.id, option.value)"
+                (change)="onRadioChange(q. id, option.value)"
+              />
+              <span class="option-text">{{ option. label }}</span>
+            </label>
+          </div>
+
+          
+          <div class="options" *ngIf="q.type === 'checkbox'">
+            <label *ngFor="let option of q.options" class="option-label">
+              <input 
+                type="checkbox" 
+                [value]="option.value"
+                [checked]="isChecked(q.id, option.value)"
+                (change)="onCheckboxChange(q.id, option.value, $event)"
+              />
+              <span class="option-text">{{ option.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary full-width" (click)="checkAnswers()">
+          Provjerite odgovore
+        </button>
+      </div>
+
+     
+      <div class="quiz-result" *ngIf="showResult">
+        <div class="result-card">
+          <h2>Rezultat</h2>
+          <div class="score-display">
+            <span class="score">{{ score }}</span>
+            <span class="separator">/</span>
+            <span class="total">{{ totalQuestions }}</span>
+          </div>
+          <p class="result-text">
+            <strong>Osvojili ste {{ score }} od {{ totalQuestions }} poena!</strong>
+          </p>
+          <div class="percentage" [ngClass]="getScoreClass()">
+            {{ getScorePercentage() }}%
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn btn-primary" (click)="restartQuiz()">
+             Ponovi kviz
+          </button>
+          <button class="btn btn-secondary" (click)="closePopup()">
+            Zatvori
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
