@@ -881,4 +881,42 @@ async getAllGratitudeEntries(): Promise<GratitudeEntry[]> {
 }
 
 
+//WHITEBOARD 
+
+async saveWhiteboardCanvas(canvasData: string): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/whiteboard/canvas`);
+    await setDoc(docRef, {
+      canvasData: canvasData,
+      lastUpdated: new Date().toISOString()
+    });
+    return true;
+  } catch (error) {
+    console.error('Error saving whiteboard:', error);
+    return false;
+  }
+}
+
+async getWhiteboardCanvas(): Promise<string | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/whiteboard/canvas`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data()['canvasData'] || null;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error loading whiteboard:', error);
+    return null;
+  }
+}
+
+
 }

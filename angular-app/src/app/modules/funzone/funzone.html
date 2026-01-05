@@ -22,6 +22,13 @@
     </div>
 
     
+    <div class="funzone-card" (click)="openWhiteboard()">
+      <div class="card-icon">🎨</div>
+      <h3>Whiteboard</h3>
+      <p>Crtajte što vam srcu milo!</p>
+    </div>
+
+    
 
   </div>
 
@@ -38,3 +45,9 @@
   *ngIf="showQuizPopup"
   (close)="closeQuiz()">
 </app-quiz-popup>
+
+
+<app-whiteboard-popup
+  *ngIf="showWhiteboardPopup"
+  (close)="closeWhiteboard()">
+</app-whiteboard-popup>

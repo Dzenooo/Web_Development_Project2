@@ -1,0 +1,49 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content whiteboard-popup" (click)="$event.stopPropagation()">
+    
+    <div class="popup-header">
+      <h2>🎨 Interaktivni Whiteboard</h2>
+      <button class="close-btn" (click)="closePopup()">✕</button>
+    </div>
+
+    <div class="popup-body">
+
+      
+      <div class="success-message" *ngIf="saveSuccess">
+        ✅ Whiteboard sačuvan! 
+      </div>
+
+      
+      <div class="toolbar">
+        <label for="colorPicker">Boja:</label>
+        <input 
+          type="color" 
+          id="colorPicker" 
+          value="#000000"
+          (input)="onColorChange($event)"
+        >
+
+        <label for="brushSize">Veličina četkice:</label>
+        <input type="range" id="brushSize" min="1" max="20" value="3">
+
+        <button id="eraserBtn" (click)="toggleEraser()">Briši</button>
+        <button (click)="clearCanvas()">Očisti ploču</button>
+      </div>
+
+      
+      <canvas id="board" width="900" height="500"></canvas>
+
+     
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="saveToFirestore()" [disabled]="loading">
+          {{ loading ? 'Čuvanje...' : '💾 Sačuvaj' }}
+        </button>
+        <button class="btn btn-secondary" (click)="exportToPDF()">
+          📥 Export PDF
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>

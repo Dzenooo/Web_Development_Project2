@@ -1,0 +1,240 @@
+.whiteboard-popup {
+  max-width: 1000px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top:  0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background:  rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.popup-content {
+  background: var(--card-bg);
+  border-radius: 12px;
+  width: 95%;
+  max-height: 95vh;
+  overflow-y:  auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform:  translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom:  1px solid var(--border-color);
+
+  h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    background:  var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.popup-body {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.success-message {
+  background: #10b981;
+  color: white;
+  padding: 12px 20px;
+  border-radius:  8px;
+  font-weight: 600;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity:  0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toolbar {
+  background: white;
+  padding: 15px 20px;
+  border-radius:  12px;
+  box-shadow:  0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 900px;
+
+  label {
+    font-size: 14px;
+    color: #444;
+    font-weight: 600;
+  }
+
+  input[type="color"] {
+    width: 50px;
+    height: 35px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  input[type="range"] {
+    width: 120px;
+    cursor: pointer;
+  }
+
+  button {
+    background: #0078d7;
+    color:  white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:  background 0.2s;
+
+    &:hover {
+      background: #005fa3;
+    }
+  }
+}
+
+canvas {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  touch-action: none;
+  max-width: 100%;
+  height: auto;
+  cursor: crosshair;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  max-width: 900px;
+
+  .btn {
+    flex: 1;
+    padding:  14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size:  15px;
+    font-weight:  600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+  }
+
+  .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+
+    &:hover {
+      background: var(--border-color);
+      border-color: var(--primary);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 12px;
+    gap: 10px;
+
+    label {
+      font-size: 12px;
+    }
+
+    input[type="range"] {
+      width: 80px;
+    }
+
+    button {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
