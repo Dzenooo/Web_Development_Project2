@@ -221,15 +221,15 @@ Ova dokumentacija pokriva kompletan tehnički overview Student Productivity Plat
 
 Projekat demonstrira napredne Angular koncepte:
 
-Standalone components|
-Reactive Forms sa custom validatorima|
-Firebase integracija (Auth + Firestore)|
-Route Guards|
-Drag & Drop API|
-Canvas API|
-Change Detection optimizacije|
-SCSS modularizacija|
-Responsive dizajn|
+Standalone components | 
+Reactive Forms sa custom validatorima | 
+Firebase integracija (Auth + Firestore) | 
+Route Guards | 
+Drag & Drop API | 
+Canvas API | 
+Change Detection optimizacije | 
+SCSS modularizacija | 
+Responsive dizajn | 
 Theme switching sistem
 
 
