@@ -1,0 +1,125 @@
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content kanban-popup" (click)="$event.stopPropagation()">
+    
+
+    <div class="popup-header">
+      <h2>📋 Kanban Ploča</h2>
+      <button class="close-btn" (click)="closePopup()">&times;</button>
+    </div>
+
+
+    <div class="popup-body">
+      
+
+      <div *ngIf="saveSuccess" class="success-message">
+        ✅ Kanban board uspješno sačuvan!
+      </div>
+
+      <div class="buttons">
+        <button (click)="openAddModal()">+ Dodaj zadatak</button>
+        <button (click)="saveBoard()" [disabled]="loading">
+          {{ loading ? '⏳ Čuvanje...' : '💾 Snimi' }}
+        </button>
+        <button (click)="openClearModal()" class="btn-danger">🗑️ Očisti ploču</button>
+      </div>
+
+      
+      <div class="board">
+        
+
+        <div class="column" 
+             (dragover)="onDragOver($event)" 
+             (drop)="onDrop('todo', $event)">
+          <h3>📝 To Do</h3>
+          <div class="taskList">
+            <div *ngFor="let task of todoTasks" 
+                 class="task"
+                 draggable="true"
+                 (dragstart)="onDragStart(task, $event)"
+                 (dragend)="onDragEnd($event)">
+              <span>{{ task.text }}</span>
+              <button class="delete-btn" (click)="deleteTask(task)">×</button>
+            </div>
+            <div *ngIf="todoTasks.length === 0" class="empty-state">
+              Nema zadataka
+            </div>
+          </div>
+        </div>
+
+     
+        <div class="column" 
+             (dragover)="onDragOver($event)" 
+             (drop)="onDrop('progress', $event)">
+          <h3>⚙️ In Progress</h3>
+          <div class="taskList">
+            <div *ngFor="let task of progressTasks" 
+                 class="task"
+                 draggable="true"
+                 (dragstart)="onDragStart(task, $event)"
+                 (dragend)="onDragEnd($event)">
+              <span>{{ task.text }}</span>
+              <button class="delete-btn" (click)="deleteTask(task)">×</button>
+            </div>
+            <div *ngIf="progressTasks.length === 0" class="empty-state">
+              Nema zadataka
+            </div>
+          </div>
+        </div>
+
+  
+        <div class="column" 
+             (dragover)="onDragOver($event)" 
+             (drop)="onDrop('done', $event)">
+          <h3>✅ Done</h3>
+          <div class="taskList">
+            <div *ngFor="let task of doneTasks" 
+                 class="task task-done"
+                 draggable="true"
+                 (dragstart)="onDragStart(task, $event)"
+                 (dragend)="onDragEnd($event)">
+              <span>{{ task.text }}</span>
+              <button class="delete-btn" (click)="deleteTask(task)">×</button>
+            </div>
+            <div *ngIf="doneTasks.length === 0" class="empty-state">
+              Nema zadataka
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div *ngIf="showAddModal" class="modal" (click)="showAddModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Dodaj zadatak</h3>
+    <input 
+      type="text" 
+      id="taskInput"
+      [(ngModel)]="newTaskText" 
+      placeholder="Vaš zadatak..." 
+      (keyup.enter)="addTask()"
+      autofocus
+    />
+    <div class="modal-buttons">
+      <button (click)="addTask()">Dodaj</button>
+      <button (click)="showAddModal = false">Poništi</button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showClearModal" class="modal" (click)="showClearModal = false">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Očisti cijelu ploču</h3>
+    <p>Ova akcija se ne može poništiti.</p>
+    <div class="modal-buttons">
+      <button class="btn-danger" (click)="confirmClear()">Očisti</button>
+      <button (click)="showClearModal = false">Poništi</button>
+    </div>
+  </div>
+</div>

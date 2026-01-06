@@ -35,6 +35,12 @@
       <p>Kreirajte svoju viziju!</p>
     </div>
 
+    <div class="funzone-card" (click)="openKanban()">
+      <div class="card-icon">📋</div>
+      <h3>Kanban Board</h3>
+      <p>Organizuj zadatke i prati napredak</p>
+    </div>
+
     
 
   </div>
@@ -64,3 +70,9 @@
   *ngIf="showVisionBoardPopup"
   (close)="closeVisionBoard()">
 </app-visionboard-popup>
+
+
+<app-kanban-popup
+  *ngIf="showKanbanPopup"
+  (close)="closeKanban()">
+</app-kanban-popup>

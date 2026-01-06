@@ -958,4 +958,46 @@ async getVisionBoard(): Promise<any[] | null> {
 }
 
 
+
+//KANBAN BOARD 
+
+// ==================== KANBAN BOARD ====================
+
+async saveKanbanBoard(tasks: any[]): Promise<boolean> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return false;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/kanban/board`);
+    await setDoc(docRef, {
+      tasks:  tasks,
+      lastUpdated:  new Date().toISOString()
+    });
+    console.log('✅ Kanban board saved');
+    return true;
+  } catch (error) {
+    console.error('❌ Error saving Kanban board:', error);
+    return false;
+  }
+}
+
+async getKanbanBoard(): Promise<any[] | null> {
+  const userId = this.getCurrentUserId();
+  if (!userId) return null;
+
+  try {
+    const docRef = doc(this.firestore, `users/${userId}/kanban/board`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data()['tasks'] || null;
+    }
+    return null;
+  } catch (error) {
+    console.error('❌ Error loading Kanban board:', error);
+    return null;
+  }
+}
+
+
 }
