@@ -1,0 +1,81 @@
+.app-header {
+  background:  linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index:  100;
+}
+
+.app-nav {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.app-logo {
+  h2 {
+    color: white;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
+}
+
+.app-nav ul {
+  list-style: none;
+  margin: 0;
+  padding:  0;
+  display: flex;
+  gap: 10px;
+  
+  li {
+    a {
+      display: block;
+      padding: 18px 24px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      
+      &:hover {
+        background:  rgba(255, 255, 255, 0.15);
+      }
+      
+      &.active {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      
+      &.logout-btn {
+        background: rgba(231, 76, 60, 0.9);
+        cursor: pointer;
+        
+        &:hover {
+          background: #c0392b;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .app-nav {
+    flex-direction: column;
+    padding: 15px;
+    
+    ul {
+      flex-direction: column;
+      width: 100%;
+      gap: 5px;
+      
+      li a {
+        padding: 12px 20px;
+        text-align: center;
+      }
+    }
+  }
+}

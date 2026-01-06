@@ -47,7 +47,7 @@ export class LoginComponent {
 
     if (result. success) {
       setTimeout(() => {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/profile']);
       }, 100);
     } else {
       if (result.error?.includes('invalid-credential')) {

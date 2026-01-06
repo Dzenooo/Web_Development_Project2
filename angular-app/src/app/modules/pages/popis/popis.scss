@@ -1,0 +1,95 @@
+article {
+  max-width: 900px;
+  margin: 40px auto;
+  padding:  40px;
+  background:  white;
+  border-radius:  16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  line-height: 1.8;
+  
+  h2 {
+    color:  #667eea;
+    font-size: 36px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #667eea;
+    text-align:  center;
+  }
+  
+  h3 {
+    color: #764ba2;
+    font-size: 24px;
+    margin-top: 35px;
+    margin-bottom:  20px;
+    padding-left: 15px;
+    border-left: 4px solid #667eea;
+    
+    em {
+      font-style: italic;
+      color: #667eea;
+    }
+  }
+  
+  img {
+    width: 100%;
+    max-width: 400px;        // ← SMANJENO
+    height: auto;
+    border-radius: 12px;
+    margin: 30px auto;
+    display: block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  ol {
+    margin: 25px 0 35px 30px;
+    padding-left: 25px;
+    
+    li {
+      color: #34495e;
+      margin-bottom: 14px;
+      line-height: 1.7;
+      font-size: 16px;
+      padding-left: 12px;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        color: #667eea;
+        font-weight: 600;
+        transform: translateX(5px);
+      }
+    }
+  }
+}
+
+footer {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  text-align: center;
+  padding: 25px;
+  margin-top: 60px;
+  font-size: 14px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  article {
+    margin: 20px;
+    padding: 25px;
+    
+    h2 {
+      font-size: 28px;
+    }
+    
+    h3 {
+      font-size: 20px;
+    }
+    
+    img {
+      max-width: 100%;
+    }
+    
+    ol li {
+      font-size: 15px;
+    }
+  }
+}

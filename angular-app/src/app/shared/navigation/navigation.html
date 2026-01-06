@@ -1,0 +1,21 @@
+<header>
+  <nav>
+    <a routerLink="/" class="logo-link">
+      <img src="assets/logo-ipi.png" alt="Kursevi IPI">
+    </a>
+    
+    <ul class="nav-links">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">O kursevima</a></li>
+      <li><a routerLink="/popis" routerLinkActive="active">Popis kurseva</a></li>
+      <li><a routerLink="/raspored" routerLinkActive="active">Raspored kurseva</a></li>
+      <li><a routerLink="/kontakt" routerLinkActive="active">Kontakt</a></li>
+      
+   
+      <li *ngIf="! isLoggedIn()">
+        <a class="auth-link" routerLink="/login">Login / Registracija</a>
+      </li>
+      
+     
+    </ul>
+  </nav>
+</header>

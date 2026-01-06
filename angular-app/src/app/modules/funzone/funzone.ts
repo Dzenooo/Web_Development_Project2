@@ -5,6 +5,7 @@ import { QuizPopupComponent } from './components/quiz-popup/quiz-popup';
 import { WhiteboardPopupComponent } from './components/whiteboard-popup/whiteboard-popup';
 import { VisionboardPopupComponent } from './components/visionboard-popup/visionboard-popup';
 import { KanbanPopupComponent } from './components/kanban-popup/kanban-popup';
+import { AppNavigationComponent } from '../../shared/app-navigation/app-navigation';
 
 @Component({
   selector: 'app-funzone',
@@ -15,7 +16,8 @@ import { KanbanPopupComponent } from './components/kanban-popup/kanban-popup';
     QuizPopupComponent,
     WhiteboardPopupComponent,
     VisionboardPopupComponent,
-    KanbanPopupComponent
+    KanbanPopupComponent,
+    AppNavigationComponent
   ],
   templateUrl: './funzone.html',
   styleUrl: './funzone.scss'

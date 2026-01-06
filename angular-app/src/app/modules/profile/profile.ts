@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user';
 import { AuthService } from '../../core/services/auth';
 import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switcher';
+import { AppNavigationComponent } from '../../shared/app-navigation/app-navigation';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ThemeSwitcherComponent],
+  imports: [CommonModule, ReactiveFormsModule, ThemeSwitcherComponent, AppNavigationComponent],
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })
@@ -203,7 +204,10 @@ export class ProfileComponent implements OnInit {
     document.body.classList.add('theme-light');
 
     await this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']).then(() => {
+    
+      window.location.reload();
+    });
   }
 
   get pf() {

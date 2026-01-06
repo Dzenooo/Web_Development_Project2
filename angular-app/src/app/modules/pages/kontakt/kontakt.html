@@ -1,0 +1,115 @@
+<app-navigation></app-navigation>
+
+<article>
+  <h2>Kontakt</h2>
+  <img src="assets/srce.jpg" alt="Srce">
+  
+  <p>Do IPI-ja se može doći javnim gradskim prevozom ili taksijem. </p>
+  <p>Naša adresa je: </p>
+  
+  <div class="address-box">
+    <p>
+      Sveučilišni računski centar<br>
+      Kulina bana br. 2 (Skver)<br>
+      Tuzla<br>
+      75000<br>
+      Bosna i Hercegovina<br>
+      <a href="mailto:info@ipi-akademija.ba">info@ipi-akademija.ba</a>
+    </p>
+  </div>
+  
+  <!-- Kontakt forma -->
+  <div class="contact-form">
+    <h3>Pošaljite nam poruku</h3>
+    
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-row">
+        <label for="fullname">Ime i prezime *</label>
+        <input 
+          type="text" 
+          id="fullname" 
+          formControlName="fullname" 
+          placeholder="Ime i prezime"
+          [class.error-input]="isFieldInvalid('fullname')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('fullname')">
+          Unesite ime i prezime (barem 5 znakova).
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <label for="email">Email *</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          placeholder="primjer@domen.ba"
+          [class.error-input]="isFieldInvalid('email')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('email')">
+          Unesite ispravan email (primjer:  ime@domen.ba).
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <label for="phone">Broj telefona *</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          formControlName="phone" 
+          placeholder="+387 61 123 456"
+          [class.error-input]="isFieldInvalid('phone')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('phone')">
+          Unesite ispravan broj telefona.
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <label for="message">Poruka *</label>
+        <textarea 
+          id="message" 
+          formControlName="message" 
+          placeholder="Vaša poruka..."
+          rows="5"
+          [class.error-input]="isFieldInvalid('message')"
+        ></textarea>
+        <div class="error-message" *ngIf="isFieldInvalid('message')">
+          Poruka ne smije biti prazna.
+        </div>
+      </div>
+      
+      <div class="form-row form-checkbox">
+        <label>
+          <input type="checkbox" formControlName="terms" />
+          Prihvaćam uvjete (terms and conditions) *
+        </label>
+        <div class="error-message" *ngIf="isFieldInvalid('terms')">
+          Morate prihvatiti uvjete prije slanja. 
+        </div>
+      </div>
+      
+      <div class="form-row form-checkbox">
+        <label>
+          <input type="checkbox" formControlName="newsletter" />
+          Želim primati newsletter
+        </label>
+      </div>
+      
+      <div class="form-row">
+        <button type="submit" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Šalje se...' : 'Pošalji informacije' }}
+        </button>
+      </div>
+      
+      <div class="success-message" *ngIf="submitSuccess">
+        ✅ Poruka uspješno poslana.  Hvala! 
+      </div>
+      
+    </form>
+  </div>
+  
+</article>
+
+<footer>&copy; Internacionalna poslovno-informaciona akademija Tuzla</footer>

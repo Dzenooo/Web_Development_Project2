@@ -6,11 +6,12 @@ import { SleepTrackerPopupComponent } from './components/sleep-tracker-popup/sle
 import { ExerciseTrackerPopupComponent } from './components/exercise-tracker-popup/exercise-tracker-popup';
 import { TaskPlannerPopupComponent } from './components/task-planner-popup/task-planner-popup';
 import { GratitudeJournalPopupComponent } from './components/gratitude-journal-popup/gratitude-journal-popup';
+import { AppNavigationComponent } from '../../shared/app-navigation/app-navigation';
 
 @Component({
   selector: 'app-my-trackers',
   standalone: true,
-  imports: [CommonModule, WaterTrackerPopupComponent, MoodTrackerPopupComponent, SleepTrackerPopupComponent, ExerciseTrackerPopupComponent, TaskPlannerPopupComponent, GratitudeJournalPopupComponent],
+  imports: [CommonModule, WaterTrackerPopupComponent, MoodTrackerPopupComponent, SleepTrackerPopupComponent, ExerciseTrackerPopupComponent, TaskPlannerPopupComponent, GratitudeJournalPopupComponent, AppNavigationComponent],
   templateUrl: './my-trackers.html',
   styleUrl: './my-trackers.scss'
 })
