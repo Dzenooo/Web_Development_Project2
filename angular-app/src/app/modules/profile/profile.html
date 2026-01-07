@@ -2,20 +2,17 @@
 <app-app-navigation></app-app-navigation>
 <div class="profile-container">
   
-  <!-- Loading State -->
+
   <div class="loading" *ngIf="loading">
     <p>Učitavanje profila... </p>
   </div>
 
-  <!-- Profile Content -->
   <div *ngIf="!loading">
 
-    <!-- Header -->
     <div class="profile-header">
       <h1>Moj Profil</h1>
     </div>
 
-    <!-- Success/Error Messages -->
     <div class="alert alert-success" *ngIf="successMessage">
       {{ successMessage }}
     </div>
@@ -121,7 +118,7 @@
         <h2>Sigurnost</h2>
       </div>
 
-      <!-- Password Change Button (if not in edit mode) -->
+      <!-- Password Change Button  -->
       <div class="card-actions" *ngIf="!changePasswordMode">
         <button class="btn btn-secondary" (click)="togglePasswordMode()">
           Promijeni Lozinku
@@ -180,7 +177,7 @@
       <app-theme-switcher></app-theme-switcher>
     </div>
 
-    <!-- LOGOUT BUTTON (Bottom, Centered, No Card) -->
+    <!-- LOGOUT BUTTON  -->
     <div class="logout-section">
       <button class="btn btn-danger" (click)="logout()">
         Odjavi se

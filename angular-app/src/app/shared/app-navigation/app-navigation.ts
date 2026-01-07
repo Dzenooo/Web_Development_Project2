@@ -20,7 +20,6 @@ export class AppNavigationComponent {
   logout() {
     this.authService.logout();
     this.router.navigate(['/']).then(() => {
-      // Force reload da očisti state
       window.location.reload();
     });
   }

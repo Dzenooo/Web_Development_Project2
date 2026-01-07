@@ -8,7 +8,7 @@
 
     <div class="popup-body">
       
-      <!-- GOAL SECTION -->
+
       <div class="goal-section">
         <label>Dnevni cilj (ml)</label>
         <div class="goal-input-group">
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <!-- QUICK ADD SECTION -->
+
       <div class="quick-add-section">
         <h3>Quick Add</h3>
         <div class="quick-buttons">
@@ -62,7 +62,7 @@
           </button>
         </div>
 
-        <!-- CUSTOM ADD -->
+      
         <div class="custom-add">
           <label>Količina (ml)</label>
           <div class="custom-input-group">
@@ -84,7 +84,6 @@
         </div>
       </div>
 
-      <!-- DATE SELECTOR -->
       <div class="date-selector">
        
         <input 
@@ -97,7 +96,7 @@
         
       </div>
 
-      <!-- SUMMARY SECTION - UKLONJEN *ngIf="dailyLog" -->
+
       <div class="summary-section">
         <h3>{{ selectedDate || 'Loading...' }}</h3>
         <div class="summary-stats">
@@ -122,7 +121,7 @@
         </p>
       </div>
 
-      <!-- ENTRIES SECTION -->
+
       <div class="entries-section" *ngIf="entries && entries.length > 0">
         <h3>Današnji unosi</h3>
         <div class="entries-list">
@@ -140,12 +139,12 @@
         </div>
       </div>
 
-      <!-- NO ENTRIES -->
+
       <div class="no-entries" *ngIf="! entries || entries.length === 0">
         <p>Nema unosa za ovaj datum.</p>
       </div>
 
-      <!-- CHART SECTION -->
+
       <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
         <h3>Statistika (Zadnjih 30 dana)</h3>
         <div class="simple-chart">

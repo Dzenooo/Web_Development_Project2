@@ -8,13 +8,11 @@ export const AuthGuard = () => {
 
   const user = authService.getCurrentUser();
   
-  console.log('🔒 AuthGuard - User:', user);  // ← DEBUG log
+
   
-  if (user) {
-    console.log('✅ AuthGuard - Access granted');
-    return true;  // Dozvoli pristup
+  if (user) {  
+    return true; 
   } else {
-    console.log('❌ AuthGuard - Redirect to login');
     router.navigate(['/login']);
     return false;
   }

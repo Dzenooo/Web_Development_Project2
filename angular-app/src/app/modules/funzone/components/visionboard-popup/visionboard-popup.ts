@@ -145,7 +145,7 @@ export class VisionboardPopupComponent implements AfterViewInit {
     wrapper.style.left = Math.random() * 400 + "px";
     wrapper.style.top = Math.random() * 250 + "px";
     
-    // FORCE white frame styles
+
     wrapper.style.padding = "8px";
     wrapper.style. background = "white";
     wrapper. style.borderRadius = "8px";

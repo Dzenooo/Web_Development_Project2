@@ -14,16 +14,16 @@ export class WhiteboardPopupComponent implements OnInit, AfterViewInit {
   
   @Output() close = new EventEmitter<void>();
 
-  // Canvas references
+
   private canvas! : HTMLCanvasElement;
   private ctx!: CanvasRenderingContext2D;
 
-  // Drawing state
+
   private drawing = false;
   private currentColor = '#000000';
   private isErasing = false;
 
-  // UI state
+
   loading = false;
   saveSuccess = false;
 
@@ -51,12 +51,12 @@ export class WhiteboardPopupComponent implements OnInit, AfterViewInit {
     
     this.ctx = context;
 
-    // Mouse Events
+
     this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
     this.canvas.addEventListener('mouseup', () => this.endDrawing());
     this.canvas.addEventListener('mousemove', (e) => this.draw(e));
 
-    // Touch Events (mobile / tablets)
+ 
     this.canvas.addEventListener('touchstart', (e) => this.startDrawing(e));
     this.canvas.addEventListener('touchend', () => this.endDrawing());
     this.canvas.addEventListener('touchmove', (e) => {
@@ -80,7 +80,7 @@ export class WhiteboardPopupComponent implements OnInit, AfterViewInit {
 
     const rect = this.canvas.getBoundingClientRect();
 
-    // Prilagodite polozaj misa velicini ploce
+ 
     const scaleX = this.canvas.width / rect.width;
     const scaleY = this.canvas.height / rect. height;
 
@@ -155,7 +155,6 @@ export class WhiteboardPopupComponent implements OnInit, AfterViewInit {
       const savedCanvas = await this.trackerService.getWhiteboardCanvas();
 
       if (savedCanvas) {
-        // Wait for canvas to be ready
         setTimeout(() => {
           if (! this.ctx) return;
 

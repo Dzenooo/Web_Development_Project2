@@ -1,28 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './navigation.html',
+  templateUrl:  './navigation.html',
   styleUrl: './navigation.scss'
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
+  
+  mobileMenuOpen = false;
   
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef 
   ) {}
-
-  isLoggedIn(): boolean {
-    return !!this.authService. getCurrentUser();  // ← FIXED
+  
+  ngOnInit() {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.cdr.detectChanges(); 
+    });
   }
-
-  logout() {
-    this.authService. logout();
-    this.router.navigate(['/']);
+  
+  isLoggedIn(): boolean {
+    return !!this.authService. getCurrentUser();
+  }
+  
+  toggleMobileMenu() {
+    this.mobileMenuOpen = false;
+  }
+  
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
   }
 }

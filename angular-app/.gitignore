@@ -1,34 +1,42 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files. 
 
-# Compiled output
+# ========================================
+# COMPILED OUTPUT
+# ========================================
 /dist
 /tmp
 /out-tsc
 /bazel-out
 
-# Node
+# ========================================
+# NODE
+# ========================================
 /node_modules
-npm-debug.log
+npm-debug. log
 yarn-error.log
 
-# IDEs and editors
+# ========================================
+# IDEs AND EDITORS
+# ========================================
 .idea/
 .project
-.classpath
+. classpath
 .c9/
 *.launch
 .settings/
-*.sublime-workspace
+*. sublime-workspace
 
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
+!.vscode/tasks. json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# ========================================
+# MISCELLANEOUS
+# ========================================
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -38,10 +46,15 @@ testem.log
 /typings
 __screenshots__/
 
-# System files
+# ========================================
+# SYSTEM FILES
+# ========================================
 .DS_Store
 Thumbs.db
 
-# Firebase Config
-src/environments/environment.ts
-src/environments/environment.prod.ts
+# ========================================
+# FIREBASE CONFIG - LOCAL OVERRIDES ONLY
+# ========================================
+
+src/environments/environment.local.ts
+src/environments/. env

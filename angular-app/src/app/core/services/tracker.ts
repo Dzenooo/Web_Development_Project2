@@ -961,7 +961,7 @@ async getVisionBoard(): Promise<any[] | null> {
 
 //KANBAN BOARD 
 
-// ==================== KANBAN BOARD ====================
+
 
 async saveKanbanBoard(tasks: any[]): Promise<boolean> {
   const userId = this.getCurrentUserId();
@@ -973,10 +973,9 @@ async saveKanbanBoard(tasks: any[]): Promise<boolean> {
       tasks:  tasks,
       lastUpdated:  new Date().toISOString()
     });
-    console.log('✅ Kanban board saved');
+
     return true;
   } catch (error) {
-    console.error('❌ Error saving Kanban board:', error);
     return false;
   }
 }
@@ -994,7 +993,6 @@ async getKanbanBoard(): Promise<any[] | null> {
     }
     return null;
   } catch (error) {
-    console.error('❌ Error loading Kanban board:', error);
     return null;
   }
 }

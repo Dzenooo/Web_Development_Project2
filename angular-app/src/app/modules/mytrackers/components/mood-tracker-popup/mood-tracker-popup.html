@@ -8,7 +8,7 @@
 
     <div class="popup-body">
       
-      <!-- MOOD SELECTOR -->
+     
       <div class="mood-section">
         <h3>Kako se osjećate? </h3>
         <div class="mood-buttons">
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <!-- NOTE INPUT -->
+
       <div class="note-section">
         <label>Ostavite bilješku (opcionalno)</label>
         <textarea 
@@ -44,7 +44,7 @@
         </button>
       </div>
 
-      <!-- DATE SELECTOR -->
+
       <div class="date-selector">
         <input 
           type="date" 
@@ -54,13 +54,13 @@
         />
       </div>
 
-      <!-- SUMMARY -->
+
       <div class="summary-section">
         <h3>{{ selectedDate }}</h3>
         <p *ngIf="entries.length === 0" class="no-entries">Nema unosa za ovaj datum.</p>
       </div>
 
-      <!-- ENTRIES LIST -->
+
       <div class="entries-section" *ngIf="entries && entries.length > 0">
         <h3>Današnje raspoloženje</h3>
         <div class="entries-list">
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <!-- CHART -->
+
       <div class="chart-section" *ngIf="allLogs && allLogs.length > 0">
         <h3>Mood History (Zadnjih 30 dana)</h3>
         <div class="mood-chart">

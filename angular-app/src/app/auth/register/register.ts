@@ -22,25 +22,25 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router
   ) {
-    // Inicijalizuj formu
+
     this.registerForm = this.formBuilder.group({
       displayName: ['', [Validators. required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, {
-      // Custom validator za provjeru da li se passwordi podudaraju
+  
       validators: this.passwordMatchValidator
     });
   }
 
-  // Getter za lakši pristup poljima
+
   get f() {
     return this.registerForm.controls;
   }
 
   
-   // Custom validator - provjera da li se password i confirmPassword podudaraju
+
    
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
@@ -55,23 +55,22 @@ export class RegisterComponent {
   }
 
   
-   // Submit funkcija za registraciju
+
    
   async onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
 
-    // Zaustavi ako forma nije validna
+  
     if (this.registerForm.invalid) {
       return;
     }
 
     this. loading = true;
 
-    // Dohvati vrijednosti
+
     const { displayName, email, password } = this.registerForm.value;
 
-    // Pozovi register funkciju
     const result = await this.authService. register(email, password, displayName);
 
     this.loading = false;
@@ -79,8 +78,8 @@ export class RegisterComponent {
     if (result.success) {
       console.log('Registration successful!', result.user);
       
-      // Redirektuj na dashboard
-      this.router.navigate(['/dashboard']);
+ 
+      this.router.navigate(['/profile']);
     } else {
       this.errorMessage = this.getErrorMessage(result.error);
     }
@@ -101,7 +100,7 @@ export class RegisterComponent {
     }
   }
 
-  // Navigacija na Login
+
    
   goToLogin() {
     this.router.navigate(['/login']);

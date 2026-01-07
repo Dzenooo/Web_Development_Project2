@@ -33,7 +33,7 @@ export class KontaktComponent {
   }
 
   onSubmit() {
-    // Mark all fields as touched to show validation errors
+    
     Object.keys(this.contactForm. controls).forEach(key => {
       this.contactForm.get(key)?.markAsTouched();
     });
@@ -44,14 +44,14 @@ export class KontaktComponent {
 
     this. isSubmitting = true;
 
-    // Simulate form submission (2 seconds delay)
+
     setTimeout(() => {
       console.log('Form submitted:', this.contactForm.value);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.contactForm.reset();
 
-      // Hide success message after 5 seconds
+   
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
