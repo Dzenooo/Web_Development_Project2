@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { AuthStateService } from '../../core/services/auth-state';
 
 @Component({
   selector: 'app-login',
-  standalone:  true,
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl:  './login.html',
+  templateUrl: './login.html',
   styleUrl: './login.scss'
 })
 export class LoginComponent {
@@ -20,48 +21,55 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private authStateService: AuthStateService,
     private router: Router
   ) {
-    this.loginForm = this. formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators. email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   get f() {
-    return this.loginForm. controls;
+    return this.loginForm.controls;
   }
 
   async onSubmit() {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+      return;
+    }
 
     this.loading = true;
     this.errorMessage = '';
-    
-    const result = await this.authService. login(
-      this.loginForm.value.email,
-      this.loginForm.value.password
-    );
 
-    this.loading = false;
+    const email = this.loginForm.get('email')?.value;
+    const password = this.loginForm. get('password')?.value;
 
-    if (result. success) {
-      setTimeout(() => {
-        this.router.navigate(['/profile']);
-      }, 100);
-    } else {
-      if (result.error?.includes('invalid-credential')) {
-        this.errorMessage = 'Pogrešan email ili lozinka. ';
-      } else if (result.error?.includes('timeout')) {
-        this.errorMessage = 'Zahtjev je istekao.  Provjerite internet konekciju.';
-      } else if (result.error?.includes('too-many-requests')) {
-        this.errorMessage = 'Previše pokušaja. Pokušajte ponovo kasnije.';
-      } else if (result. error?.includes('user-not-found')) {
-        this.errorMessage = 'Korisnik ne postoji.';
-      } else if (result.error?.includes('wrong-password')) {
-        this.errorMessage = 'Pogrešna lozinka. ';
+    try {
+      const result = await this.authService.login(email, password);
+
+      if (result.success) {
+        this.loading = false;
+        await this.router.navigate(['/profile']);
       } else {
-        this.errorMessage = 'Greška pri prijavljivanju.  Pokušajte ponovo. ';
+        throw new Error(result.error);
+      }
+
+    } catch (error:  any) {
+      this.loading = false;
+
+      const errorCode = error.message || error.code || '';
+
+      if (errorCode. includes('invalid-credential') || errorCode.includes('user-not-found') || errorCode.includes('wrong-password')) {
+        this.errorMessage = 'Pogrešan email ili lozinka. ';
+      } else if (errorCode.includes('too-many-requests')) {
+        this.errorMessage = 'Previše pokušaja.  Pokušajte ponovo kasnije.';
+      } else if (errorCode.includes('network-request-failed')) {
+        this.errorMessage = 'Greška sa mrežom. Provjerite internet konekciju.';
+      } else if (errorCode === 'timeout') {
+        this.errorMessage = 'Zahtjev je istekao. Pokušajte ponovo.';
+      } else {
+        this.errorMessage = 'Greška pri prijavi. Pokušajte ponovo.';
       }
     }
   }

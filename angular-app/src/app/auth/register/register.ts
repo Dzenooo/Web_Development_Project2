@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { AuthStateService } from '../../core/services/auth-state';
 
 @Component({
-  selector:  'app-register',
+  selector: 'app-register',
   standalone: true,
-  imports:  [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.scss'
 })
@@ -20,28 +21,23 @@ export class RegisterComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private authStateService: AuthStateService,
     private router: Router
   ) {
-
     this.registerForm = this.formBuilder.group({
       displayName: ['', [Validators. required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, {
-  
       validators: this.passwordMatchValidator
     });
   }
-
 
   get f() {
     return this.registerForm.controls;
   }
 
-  
-
-   
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
@@ -54,54 +50,41 @@ export class RegisterComponent {
     return null;
   }
 
-  
-
-   
   async onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
 
-  
-    if (this.registerForm.invalid) {
+    if (this.registerForm. invalid) {
       return;
     }
 
-    this. loading = true;
-
+    this.loading = true;
 
     const { displayName, email, password } = this.registerForm.value;
 
-    const result = await this.authService. register(email, password, displayName);
+    const result = await this.authService.register(email, password, displayName);
 
     this.loading = false;
 
     if (result.success) {
-      console.log('Registration successful!', result.user);
-      
- 
       this.router.navigate(['/profile']);
     } else {
       this.errorMessage = this.getErrorMessage(result.error);
     }
   }
 
-  
-   // Error poruke
-   
   private getErrorMessage(error: string): string {
-    if (error.includes('email-already-in-use')) {
+    if (error. includes('email-already-in-use')) {
       return 'Korisnik sa ovim email-om već postoji.';
-    } else if (error. includes('invalid-email')) {
+    } else if (error.includes('invalid-email')) {
       return 'Nevažeća email adresa.';
     } else if (error.includes('weak-password')) {
       return 'Lozinka je preslaba.  Koristite minimum 6 karaktera.';
     } else {
-      return 'Došlo je do greške. Pokušajte ponovo.';
+      return 'Došlo je do greške.  Pokušajte ponovo.';
     }
   }
 
-
-   
   goToLogin() {
     this.router.navigate(['/login']);
   }
