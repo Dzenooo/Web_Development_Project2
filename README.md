@@ -23,7 +23,7 @@ Kreativni alati - Whiteboard za crtanje, Vision Board za postavljanje ciljeva
   --SCSS
   --RxJS 7.8.0
   --Angular Router 18.2.0
-  --Reacitve Forms 18.2.0
+  --Reactive Forms 18.2.0
 
 -Native Browser APIs
   --localStorage
