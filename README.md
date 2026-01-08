@@ -2,6 +2,11 @@
 
 Dokumentacija za projekt 2 iz predmeta "Web Programiranje".
 
+## 📚 Dodatna Dokumentacija
+
+- **[CHARTOVI_DOKUMENTACIJA.md](./CHARTOVI_DOKUMENTACIJA.md)** - Detaljna analiza chart biblioteka i implementacije (na srpskom)
+- **[CHARTS_IMPLEMENTATION_SUMMARY.md](./CHARTS_IMPLEMENTATION_SUMMARY.md)** - Chart implementation summary (in English)
+
 ## Pregled
 Student Productivity Platform je kompleksna web aplikacija razvijena za studente IPI Akademije koja kombinuje:
 
@@ -24,6 +29,12 @@ Kreativni alati - Whiteboard za crtanje, Vision Board za postavljanje ciljeva
   --localStorage
   --HTML5 Canvas API 
   --Drag&Drop API
+
+-Data Visualization
+  --Custom CSS Charts (zero external dependencies)
+  --HTML5 Canvas API (Whiteboard)
+  --html2canvas (PDF export)
+  --html2pdf.js (PDF generation)
 
 -Backend
   --Firebase Authentication 11.1.0
